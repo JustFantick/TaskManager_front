@@ -1,0 +1,53 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 2vh 3vw 4vh 3vw;
+
+	>div {
+		flex: 1 1 auto;
+	}
+
+	footer {
+		flex-shrink: 0;
+	}
+
+	position: relative;
+}
+
+.tasks-container {
+	padding-bottom: 25px;
+
+	max-height: 100%;
+	overflow-y: auto;
+
+	&__body {
+		overflow-y: auto;
+		max-height: 100%;
+		transition: all 0.3s ease-in;
+
+		padding-bottom: 10px;
+		padding-right: #adapt(13, 7)[@value];
+
+		&::-webkit-scrollbar {
+			width: #adapt(7, 4)[@value];
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(19, 27, 50, 0.6);
+			border-radius: 5px;
+		}
+
+		>div {
+			margin-bottom: #adapt(17, 12)[@value];
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+.step {
+	display: flex;
+	align-items: center;
+	padding-bottom: 2%;
+	border-bottom: 1.5px solid rgb(67, 67, 67);
+
+	&__title {
+		flex: 1 1 auto;
+		padding-left: 13px;
+		padding-right: 5px;
+		color: rgb(122, 125, 132);
+		font-size: #adapt(24, 16)[@value];
+		transition: all 0.3s ease-in;
+
+		&.done {
+			text-decoration: line-through;
+			color: gray;
+		}
+	}
+
+	div:first-child,
+	div:last-child {
+		flex: 0 0 auto;
+	}
+}

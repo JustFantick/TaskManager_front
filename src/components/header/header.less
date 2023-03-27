@@ -1,0 +1,34 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 90;
+	padding: 4vh calc(3vw + #adapt(13, 7)[@value] + 7px) 4vh 3vw;
+	transition: all 0.2s linear;
+
+	&.scrolled {
+		background-color: rgba(0, 0, 0, 0.4);
+		backdrop-filter: blur(10px);
+		padding: 2.5vh calc(3vw + #adapt(13, 7)[@value] + 7px) 2vh 3vw;
+		box-shadow: 0px 1.5px 5px rgba(0, 0, 0, 0.3);
+	}
+
+	&__title {
+		color: #fff;
+		line-height: 1.15;
+		font-family: 'Roboto';
+
+		h1 {
+			font-size: #adapt(40, 24)[@value];
+		}
+
+		p {
+			font-size: #adapt(25, 18)[@value];
+		}
+	}
+}

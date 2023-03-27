@@ -1,0 +1,65 @@
+.sidebar {
+	background-color: rgb(39, 39, 39);
+	padding: 4vh #adapt(30, 15)[@value];
+	border-radius: 15px 0 0 15px;
+	transition: all 0.3s ease-in;
+
+	height: 100vh;
+	overflow: hidden;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	#generalChildParams {
+		background-color: rgb(50, 50, 50);
+		border-radius: 15px;
+		padding: 17px 15px;
+	}
+
+	&__header {
+		flex: 1 1 auto;
+		margin-bottom: #adapt(35, 30)[@value];
+		overflow-y: auto;
+		border-radius: 15px;
+
+		&>div {
+			#generalChildParams();
+		}
+
+		>div:first-child {
+			margin-bottom: 20px;
+		}
+
+		&::-webkit-scrollbar {
+			width: #adapt(7, 4)[@value];
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(115, 115, 115, 0.5);
+			border-radius: 5px;
+		}
+	}
+
+	&__bottom {
+		display: grid;
+		grid-template-columns: 15% auto 15%;
+		grid-template-rows: 1fr;
+		justify-items: center;
+		align-items: center;
+
+		padding-top: 15px;
+		border-top: 1px solid rgba(255, 255, 255, 0.5);
+	}
+}
+
+.edditing-time {
+	color: white;
+	font-family: 'Roboto';
+
+	font-size: #adapt(27, 20)[@value];
+}

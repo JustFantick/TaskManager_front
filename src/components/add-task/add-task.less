@@ -1,0 +1,94 @@
+.add-task {
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.75);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+
+	&__plus {
+		height: 100%;
+		width: #adapt(67.6, 41.6)[@value];
+		position: relative;
+		cursor: pointer;
+
+		&::before,
+		&::after {
+			content: '';
+			transition: all 0.3s ease-in;
+			border-radius: 5px;
+			background-color: #fff;
+			position: absolute;
+		}
+
+		&::before {
+			width: #adapt(26, 16)[@value];
+			height: 3px;
+
+			top: 50%;
+			transform: translate(-50%, -50%);
+			left: 50%;
+		}
+
+		&::after {
+			width: 3px;
+			height: #adapt(26, 16)[@value];
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+
+	transition: all 0.3s ease-in;
+
+
+	@media (min-width: 769px) {
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.95);
+		}
+	}
+
+	&__title {
+		padding: #adapt(20, 14)[@value] #adapt(64, 40)[@value] #adapt(20, 14)[@value] 0;
+		transition: all 0.3s ease-in;
+		flex: 1 1 auto;
+		font-size: #adapt(27, 17)[@value];
+		line-height: 1;
+		background-color: transparent;
+		color: white;
+	}
+
+	position: relative;
+
+	&__send-icon {
+		transition: all 0.3s ease-in;
+		position: absolute;
+		top: 50%;
+		right: #adapt(23, 8)[@value];
+		transform: translate(0, -50%);
+		border-radius: 5px;
+		padding: #adapt(7, 5)[@value];
+
+		visibility: hidden;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	&.focused {
+		background-color: rgba(0, 0, 0, 0.95);
+
+		.add-task__plus {
+			&::after {
+				transform: translate(-50%, -50%) rotate(-45deg);
+			}
+
+			&::before {
+				transform: translate(-50%, -50%) rotate(-45deg);
+			}
+		}
+
+		.add-task__send-icon {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}

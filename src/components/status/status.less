@@ -1,0 +1,21 @@
+.status {
+	background-color: transparent;
+	border: 2px solid white;
+	border-radius: 50%;
+	cursor: pointer;
+
+	position: relative;
+
+
+	&:before {
+		transition: all 0.3s ease-in;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) scale(0);
+	}
+
+	&.done:before {
+		transform: translate(-50%, -50%) scale(1);
+	}
+}

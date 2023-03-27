@@ -1,0 +1,38 @@
+.task {
+	padding: #adapt(12, 8)[@value] #adapt(23, 13)[@value] #adapt(12, 8)[@value] #adapt(23, 13)[@value];
+	display: flex;
+	align-items: center;
+	background-color: @bg-elemet-color;
+	border-radius: 10px;
+	transition: all 0.3s ease-in;
+
+	&.active {
+		background-color: @bg-element-color-hover;
+	}
+
+	@media (min-width: 1024px) {
+		&:hover {
+			background-color: @bg-element-color-hover;
+		}
+	}
+
+
+	div:first-child {
+		margin-right: #adapt(17, 10)[@value];
+		flex: 0 0 auto;
+	}
+
+	font-size: #adapt(27, 17)[@value];
+
+	&__title {
+		flex: 1 1 auto;
+		color: white;
+		line-height: 1.5;
+		transition: all 0.3s ease-in;
+
+		&.done {
+			text-decoration: line-through;
+			color: gray;
+		}
+	}
+}

@@ -1,0 +1,10 @@
+.sidebar-notes {
+	width: 100%;
+	font-size: #adapt(23, 18)[@value];
+	color: white;
+	min-height: 125px;
+
+	&:empty:before {
+		content: attr(data-text);
+	}
+}

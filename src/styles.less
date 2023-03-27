@@ -1,0 +1,145 @@
+@import url('./fonts/fonts.less');
+@import url('./fonts/icons-font.less');
+@import url('./nullstyle');
+
+#adapt(@pcSize, @mobSize, @dependWidth: 1280) {
+	@sizeDiff: @pcSize - @mobSize;
+	@value: calc(@mobSize * 1px + (@pcSize - @mobSize) * ((100vw - 320px) / (@dependWidth - 320)));
+}
+
+body {
+	font-family: 'Quicksand';
+	font-weight: normal;
+}
+
+.wrapper {
+	width: 100%;
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+
+	overflow: hidden;
+
+	main,
+	aside {
+		transition: all 0.3s ease-in;
+	}
+
+	position: relative;
+
+	aside {
+		position: absolute;
+		top: 0;
+		right: -100%;
+		visibility: hidden;
+		z-index: 99;
+	}
+
+	&.active {
+		aside {
+			right: 0;
+			width: 100%;
+			visibility: visible;
+		}
+	}
+
+	@media (min-width: 450px) {
+		&.active {
+			aside {
+				width: 70%;
+			}
+		}
+	}
+
+	@media (min-width: 510px) {
+		&.active {
+			aside {
+				width: 60%;
+			}
+		}
+	}
+
+	@media (min-width: 610px) {
+		&.active {
+			aside {
+				width: 50%;
+			}
+		}
+	}
+
+	@media (min-width: 670px) {
+		display: flex;
+
+		main {
+			flex: 0 0 100%;
+		}
+
+		aside {
+			flex: 0 0 0%;
+			position: static;
+		}
+
+		&.active {
+			main {
+				flex: 0 0 55%;
+			}
+
+			aside {
+				flex: 0 0 45%;
+				width: auto;
+			}
+		}
+	}
+
+	@media (min-width: 710px) {
+		&.active {
+			main {
+				flex: 0 0 55%;
+			}
+
+			aside {
+				flex: 0 0 45%;
+			}
+		}
+	}
+
+	@media (min-width: 850px) {
+		&.active {
+			main {
+				flex: 0 0 60%;
+			}
+
+			aside {
+				flex: 0 0 40%;
+				position: static;
+			}
+		}
+	}
+
+	@media (min-width: 1600px) {
+		&.active {
+			main {
+				flex: 0 0 65%;
+			}
+
+			aside {
+				flex: 0 0 35%;
+				position: static;
+			}
+		}
+	}
+
+}
+
+@bg-elemet-color: rgb(46, 47, 49);
+@bg-element-color-hover: rgb(57, 58, 60);
+
+@import url('./components/main/main');
+@import url('./components/header/header');
+@import url('./components/task/task');
+@import url('./components/add-task/add-task');
+@import url('./components/sidebar/sidebar');
+@import url('./components/step/step');
+@import url('./components/sidebar-header/sidebar-header');
+@import url('./components/notes/notes');
+@import url('./components/popup/popup');
