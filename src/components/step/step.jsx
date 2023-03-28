@@ -12,7 +12,7 @@ export default function Step(props) {
 				className={props.stepStatus ? "step__title done" : "step__title"}
 				contentEditable="true"
 				suppressContentEditableWarning="true"
-				onBlur={props.onTaskStepChange}
+				onBlur={props.onStepChange}
 				onKeyDown={props.enterHandler}
 			>
 				{props.text}

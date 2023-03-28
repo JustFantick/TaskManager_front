@@ -63,7 +63,7 @@ export default function SidebarHeader(props) {
 								stepStatus={step.stepDone}
 								stepStatusChangeHandler={props.stepStatusChangeHandler}
 								func={props.deleteStep}
-								onTaskStepChange={props.onTaskStepChange}
+								onStepChange={props.onStepChange}
 								enterHandler={enterHandler}
 							/>
 						)) : ''

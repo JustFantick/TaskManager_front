@@ -61,15 +61,19 @@ export default function Sidebar(props) {
 					addStep={props.addStep}
 					deleteStep={props.deleteStep}
 					onTitleChange={props.onTitleChange}
-					onTaskStepChange={props.onTaskStepChange}
+					onStepChange={props.onStepChange}
 
 					taskStatusChangeHandler={props.taskStatusChangeHandler}
 					stepStatusChangeHandler={props.stepStatusChangeHandler}
 				/>
 
-				<Notes saveNote={props.saveNote}
-					noteText={props.tasksList[props.currentTask] ?
-						props.tasksList[props.currentTask].stepsNote : ''} />
+				<Notes
+					saveNote={props.saveNote}
+					noteText={
+						props.tasksList[props.currentTask] ?
+							props.tasksList[props.currentTask].note : ''
+					}
+				/>
 
 			</div>
 
