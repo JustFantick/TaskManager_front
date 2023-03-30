@@ -31,36 +31,6 @@ export default function App() {
 	]);
 	const [taskIndex, setTaskIndex] = useState(0);
 
-	function chooseTask(e) {
-		let targetParent = e.target.closest('.task');
-
-		if (!e.target.closest('.status') && !e.target.closest('.task__star') && !targetParent.classList.contains('active')) {
-			setTaskIndex(targetParent.getAttribute('index'))
-
-			document.querySelectorAll('.task').forEach((task) => {
-				task.classList.remove('active');
-			});
-
-			targetParent.classList.toggle('active');
-			document.querySelector('.wrapper').classList.add('active');
-
-			document.querySelector('.main').addEventListener('click', function (e) {
-				if (!e.target.closest('.task')) {
-					document.querySelector('.wrapper').classList.remove('active');
-					document.querySelectorAll('.task').forEach((task) => {
-						task.classList.remove('active');
-					});
-					document.querySelector('.main').removeEventListener('click', function (e) { })
-				}
-			});
-		} else if (targetParent.classList.contains('active')) {
-			document.querySelector('.wrapper').classList.remove('active');
-			document.querySelectorAll('.task').forEach((task) => {
-				task.classList.remove('active');
-			});
-		}
-	}
-
 	function refreshTasks() {
 		setTasks([
 			{
@@ -118,8 +88,9 @@ export default function App() {
 		updateEditingTime();
 	}
 
+
 	function addStep(e) {
-		if (e.which === 13 && document.querySelector('.add-step__title').value !== '') {
+		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
 			setTasks(tasks.map((task, i) => {
 				if (i == taskIndex) {
 					task.steps = [
@@ -235,14 +206,11 @@ export default function App() {
 
 	function updateEditingTime() {
 		setTasks(tasks.map((task, i) => {
-			if (taskIndex === i) {
-				return {
-					...task,
-					lastEdit: new Date().toLocaleString('ru', {
-						hour: 'numeric',
-						minute: 'numeric',
-					}),
-				}
+			if (taskIndex == i) {
+				task.lastEdit = new Date().toLocaleString('ru', {
+					hour: 'numeric',
+					minute: 'numeric',
+				});
 			}
 			return task;
 		}));
@@ -252,7 +220,7 @@ export default function App() {
 		<div className="wrapper" style={{ backgroundImage: `url(${background})` }}>
 			<Main tasksList={tasks}
 				addTask={addTask}
-				chooseTask={chooseTask}
+				setTaskIndex={setTaskIndex}
 				taskStatusChangeHandler={taskStatusChangeHandler}
 				refreshTasks={refreshTasks}
 				starStatusChange={starStatusChange}
@@ -278,5 +246,6 @@ export default function App() {
 				currentTask={taskIndex}
 				removeTask={removeTask}
 			/>
-		</div>)
+		</div>
+	)
 }

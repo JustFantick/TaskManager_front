@@ -28,7 +28,7 @@ export default function TaskContainer(props) {
 			>
 				{
 					props.tasks.map((task, index) => (
-						<Task key={index} index={index} title={task.title} chooseTask={props.chooseTask}
+						<Task key={index} index={index} title={task.title} setTaskIndex={props.setTaskIndex}
 							isImportant={task.isImportant}
 							starStatusChange={props.starStatusChange}
 							taskStatusChangeHandler={props.taskStatusChangeHandler}

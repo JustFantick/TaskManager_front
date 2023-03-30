@@ -71,7 +71,7 @@ export default function SidebarHeader(props) {
 			</ul>
 
 			<div className='add-step' onClick={interactInput}>
-				<div className="add-step__plus" ></div>
+				<div className="add-step__plus"></div>
 
 				<input type={'text'} name='stepName'
 					placeholder='Enter next step`s title'

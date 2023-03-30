@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import SidebarHeader from '../sidebar-header/sidebar-header.jsx';
 import Notes from '../notes/notes.jsx';
+import SidebarFooter from '../sidebar-footer/sidebar-footer.jsx';
 
 export default function Sidebar(props) {
 	const [isPc, setIsPc] = useState(true);
-
-	function openPopup() {
-		document.querySelector('.popup').classList.add('active');
-		if (isPc) {
-			window.addEventListener("keyup", (e) => {
-				if (e.keyCode == 27) document.querySelector('.popup').classList.remove('active');
-			}, { once: true });
-		}
-	}
-
-	function hideSidebar() {
-		document.querySelector('.wrapper').classList.remove('active');
-		document.querySelectorAll('.task').forEach((task) => {
-			task.classList.remove('active');
-		});
-	}
 
 	useEffect(() => {
 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
@@ -77,17 +62,13 @@ export default function Sidebar(props) {
 
 			</div>
 
-			<div className='sidebar__bottom'>
-				<div className='ico-back-Btn' onClick={hideSidebar}></div>
-				<div className='edditing-time'>
-					Last edit: {
-						props.tasksList[props.currentTask] ?
-							props.tasksList[props.currentTask].lastEdit : ''
-					}
-				</div>
-				<div onClick={openPopup} className='delete ico-bin'></div>
-			</div>
-
+			<SidebarFooter
+				isPc={isPc}
+				editingTime={
+					props.tasksList[props.currentTask] ?
+						props.tasksList[props.currentTask].lastEdit : ''
+				}
+			/>
 		</aside>
 	)
 }
