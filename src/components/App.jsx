@@ -88,7 +88,6 @@ export default function App() {
 		updateEditingTime();
 	}
 
-
 	function addStep(e) {
 		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
 			setTasks(tasks.map((task, i) => {

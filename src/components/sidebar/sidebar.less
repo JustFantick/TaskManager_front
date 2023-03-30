@@ -63,3 +63,18 @@
 
 	font-size: #adapt(27, 20)[@value];
 }
+
+//Appearence animation while sidebar active
+.sidebar__header,
+.sidebar__bottom {
+	transition: all 0.35s ease-in 0.25s;
+	opacity: 0;
+}
+
+.wrapper.active {
+
+	.sidebar__header,
+	.sidebar__bottom {
+		opacity: 1;
+	}
+}
