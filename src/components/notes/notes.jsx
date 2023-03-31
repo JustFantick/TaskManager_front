@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react';
+
+import { TasksContext } from '../App.jsx';
+import { TaskIndexContext } from '../App.jsx';
+
 
 export default function Notes(props) {
+	const tasksFromContext = useContext(TasksContext);
+	const taskIndexFromContext = useContext(TaskIndexContext);
+
 	return (
 		<div className='sidebar-notes'
 			data-text="Add notes"
@@ -9,7 +16,10 @@ export default function Notes(props) {
 			suppressContentEditableWarning="true"
 			onBlur={props.saveNote}
 		>
-			{props.noteText}
+			{
+				tasksFromContext[taskIndexFromContext] ?
+					tasksFromContext[taskIndexFromContext].note : ''
+			}
 		</div>
 	)
 }

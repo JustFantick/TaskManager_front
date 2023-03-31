@@ -4,6 +4,9 @@ import Main from "./main/main.jsx";
 import Sidebar from "./sidebar/sidebar.jsx";
 import DeleteTaskPopup from './popup/popup.jsx';
 
+export const TasksContext = React.createContext({});
+export const TaskIndexContext = React.createContext(0);
+
 export default function App() {
 	const [tasks, setTasks] = useState([
 		{
@@ -217,34 +220,33 @@ export default function App() {
 
 	return (
 		<div className="wrapper" style={{ backgroundImage: `url(${background})` }}>
-			<Main tasksList={tasks}
-				addTask={addTask}
-				setTaskIndex={setTaskIndex}
-				taskStatusChangeHandler={taskStatusChangeHandler}
-				refreshTasks={refreshTasks}
-				starStatusChange={starStatusChange}
-			/>
+			<TasksContext.Provider value={tasks}>
+				<Main
+					addTask={addTask}
+					setTaskIndex={setTaskIndex}
+					taskStatusChangeHandler={taskStatusChangeHandler}
+					refreshTasks={refreshTasks}
+					starStatusChange={starStatusChange}
+				/>
 
-			<Sidebar
-				tasksList={tasks}
-				currentTask={taskIndex}
-				onTitleChange={onTaskTitleChange}
-				onStepChange={onStepChange}
+				<TaskIndexContext.Provider value={taskIndex}>
+					<Sidebar
+						onTitleChange={onTaskTitleChange}
+						onStepChange={onStepChange}
 
-				taskStatusChangeHandler={taskStatusChangeHandler}
+						taskStatusChangeHandler={taskStatusChangeHandler}
 
-				addStep={addStep}
-				deleteStep={deleteStep}
-				stepStatusChangeHandler={stepStatusChangeHandler}
+						addStep={addStep}
+						deleteStep={deleteStep}
+						stepStatusChangeHandler={stepStatusChangeHandler}
 
-				saveNote={saveNote}
-			/>
+						saveNote={saveNote}
+					/>
 
-			<DeleteTaskPopup
-				tasksList={tasks}
-				currentTask={taskIndex}
-				removeTask={removeTask}
-			/>
+					<DeleteTaskPopup removeTask={removeTask} />
+
+				</TaskIndexContext.Provider>
+			</TasksContext.Provider>
 		</div>
 	)
 }

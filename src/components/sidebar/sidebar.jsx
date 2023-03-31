@@ -41,8 +41,6 @@ export default function Sidebar(props) {
 		<aside className="sidebar">
 			<div className='sidebar__header'>
 				<SidebarHeader
-					tasksList={props.tasksList}
-					currentTask={props.currentTask}
 					addStep={props.addStep}
 					deleteStep={props.deleteStep}
 					onTitleChange={props.onTitleChange}
@@ -52,23 +50,11 @@ export default function Sidebar(props) {
 					stepStatusChangeHandler={props.stepStatusChangeHandler}
 				/>
 
-				<Notes
-					saveNote={props.saveNote}
-					noteText={
-						props.tasksList[props.currentTask] ?
-							props.tasksList[props.currentTask].note : ''
-					}
-				/>
+				<Notes saveNote={props.saveNote} />
 
 			</div>
 
-			<SidebarFooter
-				isPc={isPc}
-				editingTime={
-					props.tasksList[props.currentTask] ?
-						props.tasksList[props.currentTask].lastEdit : ''
-				}
-			/>
+			<SidebarFooter isPc={isPc} />
 		</aside>
 	)
 }

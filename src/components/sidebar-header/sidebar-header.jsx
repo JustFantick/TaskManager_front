@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Status from '../status/status.jsx';
 import Step from '../step/step.jsx';
+
+import { TasksContext } from '../App.jsx';
+import { TaskIndexContext } from '../App.jsx';
 
 export default function SidebarHeader(props) {
 	function interactInput(e) {
@@ -27,17 +30,20 @@ export default function SidebarHeader(props) {
 		if (e.which == 13) e.target.blur();
 	}
 
+	const tasksFromContext = useContext(TasksContext);
+	const taskIndexFromContext = useContext(TaskIndexContext);
+
 	return (
 		<div className='sidebar-header'>
 			<div className="sidebar-task">
 				<Status mb={20} pc={25}
-					status={props.tasksList[props.currentTask] ? props.tasksList[props.currentTask].taskStatusDone : false}
+					status={tasksFromContext[taskIndexFromContext] ? tasksFromContext[taskIndexFromContext].taskStatusDone : false}
 					statusChangeHandler={props.taskStatusChangeHandler}
 				/>
 				<div
 					className={
-						props.tasksList[props.currentTask] ?
-							props.tasksList[props.currentTask].taskStatusDone ?
+						tasksFromContext[taskIndexFromContext] ?
+							tasksFromContext[taskIndexFromContext].taskStatusDone ?
 								"sidebar-task__title done" : "sidebar-task__title" : "sidebar-task__title"
 					}
 					contentEditable="true"
@@ -47,15 +53,15 @@ export default function SidebarHeader(props) {
 					onKeyDown={enterHandler}
 				>
 					{
-						props.tasksList[props.currentTask] ?
-							props.tasksList[props.currentTask].title : ''
+						tasksFromContext[taskIndexFromContext] ?
+							tasksFromContext[taskIndexFromContext].title : ''
 					}
 				</div>
 			</div>
 			<ul className='steps-list'>
 				{
-					props.tasksList[props.currentTask] ?
-						props.tasksList[props.currentTask].steps.map((step, index) => (
+					tasksFromContext[taskIndexFromContext] ?
+						tasksFromContext[taskIndexFromContext].steps.map((step, index) => (
 							<Step
 								key={index}
 								text={step.title}

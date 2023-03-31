@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { TasksContext } from '../App.jsx';
+import { TaskIndexContext } from '../App.jsx';
 
 export default function DeleteTaskPopup(props) {
 	function hidePopup() {
@@ -8,13 +11,16 @@ export default function DeleteTaskPopup(props) {
 		if (!e.target.closest('.popup__body')) hidePopup();
 	}
 
+	const tasksFromContext = useContext(TasksContext);
+	const taskIndexFromContext = useContext(TaskIndexContext);
+
 	return (
 		<div className='popup' onClick={outBodyClick}>
 			<div className="popup__body">
 				<div className='popup__question'>
 					You want to delete the '{
-						props.tasksList[props.currentTask] ?
-							props.tasksList[props.currentTask].title : ''
+						tasksFromContext[taskIndexFromContext] ?
+							tasksFromContext[taskIndexFromContext].title : ''
 					}', right?
 				</div>
 				<button onClick={hidePopup} className='popup__cancel-btn'>Cancel</button>

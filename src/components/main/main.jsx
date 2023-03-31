@@ -8,7 +8,7 @@ export default function Main(props) {
 		<main className="main">
 			<Header refreshTasks={props.refreshTasks} />
 
-			<TaskContainer tasks={props.tasksList}
+			<TaskContainer
 				setTaskIndex={props.setTaskIndex}
 				starStatusChange={props.starStatusChange}
 				taskStatusChangeHandler={props.taskStatusChangeHandler} />

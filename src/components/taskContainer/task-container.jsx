@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Task from '../task/task.jsx';
+
+import { TasksContext } from '../App.jsx';
 
 export default function TaskContainer(props) {
 	function scrollHandler() {
@@ -20,6 +22,8 @@ export default function TaskContainer(props) {
 		taskContainerBody.style.paddingTop = headerHeight + 'px';
 	}, []);
 
+	const tasksFromContext = useContext(TasksContext);
+
 	return (
 		<div className="tasks-container">
 			<div
@@ -27,12 +31,12 @@ export default function TaskContainer(props) {
 				onScroll={scrollHandler}
 			>
 				{
-					props.tasks.map((task, index) => (
+					tasksFromContext.map((task, index) => (
 						<Task key={index} index={index} title={task.title} setTaskIndex={props.setTaskIndex}
 							isImportant={task.isImportant}
 							starStatusChange={props.starStatusChange}
 							taskStatusChangeHandler={props.taskStatusChangeHandler}
-							taskStatus={props.tasks[index].taskStatusDone} />
+							taskStatus={tasksFromContext[index].taskStatusDone} />
 					))
 				}
 			</div>

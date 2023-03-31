@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react';
+
+import { TasksContext } from '../App.jsx';
+import { TaskIndexContext } from '../App.jsx';
 
 export default function SidebarFooter(props) {
 	function openPopup() {
@@ -16,11 +19,18 @@ export default function SidebarFooter(props) {
 			task.classList.remove('active');
 		});
 	}
+
+	const tasksFromContext = useContext(TasksContext);
+	const taskIndexFromContext = useContext(TaskIndexContext);
+
 	return (
 		<div className='sidebar__bottom'>
 			<div className='ico-back-Btn' onClick={hideSidebar}></div>
 			<div className='edditing-time'>
-				Last edit: {props.editingTime}
+				Last edit: {
+					tasksFromContext[taskIndexFromContext] ?
+						tasksFromContext[taskIndexFromContext].lastEdit : ''
+				}
 			</div>
 			<div onClick={openPopup} className='delete ico-bin'></div>
 		</div>
