@@ -11,6 +11,16 @@ export default function DeleteTaskPopup(props) {
 		if (!e.target.closest('.popup__body')) hidePopup();
 	}
 
+	function deleteBtnClickHandler() {
+		document.querySelector('.wrapper').classList.remove('active');
+		document.querySelector('.popup').classList.remove('active');
+		document.querySelectorAll('.task').forEach((task) => {
+			task.classList.remove('active');
+		});
+
+		props.removeTask();
+	}
+
 	const tasksFromContext = useContext(TasksContext);
 	const taskIndexFromContext = useContext(TaskIndexContext);
 
@@ -24,7 +34,7 @@ export default function DeleteTaskPopup(props) {
 					}', right?
 				</div>
 				<button onClick={hidePopup} className='popup__cancel-btn'>Cancel</button>
-				<button onClick={props.removeTask} className='popup__right-btn'>Delete</button>
+				<button onClick={deleteBtnClickHandler} className='popup__right-btn'>Delete</button>
 			</div>
 		</div>)
 }

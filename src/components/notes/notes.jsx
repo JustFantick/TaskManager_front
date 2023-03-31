@@ -5,6 +5,10 @@ import { TaskIndexContext } from '../App.jsx';
 
 
 export default function Notes(props) {
+	function onNotesBlur(e) {
+		props.saveNote(e.target.textContent);
+	}
+
 	const tasksFromContext = useContext(TasksContext);
 	const taskIndexFromContext = useContext(TaskIndexContext);
 
@@ -14,7 +18,7 @@ export default function Notes(props) {
 			contentEditable="true"
 			tabIndex={-1}
 			suppressContentEditableWarning="true"
-			onBlur={props.saveNote}
+			onBlur={onNotesBlur}
 		>
 			{
 				tasksFromContext[taskIndexFromContext] ?

@@ -27,7 +27,20 @@ export default function SidebarHeader(props) {
 	}
 
 	function enterHandler(e) {
-		if (e.which == 13) e.target.blur();
+		if (e.code === 'Enter') e.target.blur();
+	}
+
+	function onAddStepKeyDownHandler(e) {
+		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
+			props.addStep(e.target.value);
+
+			//empty the input
+			e.target.value = '';
+		}
+	}
+
+	function taskTitleChangeHandler(e) {
+		props.onTaskTitleChange(e.target.textContent);
 	}
 
 	const tasksFromContext = useContext(TasksContext);
@@ -49,7 +62,7 @@ export default function SidebarHeader(props) {
 					contentEditable="true"
 					tabIndex={-1}
 					suppressContentEditableWarning="true"
-					onBlur={props.onTitleChange}
+					onBlur={taskTitleChangeHandler}
 					onKeyDown={enterHandler}
 				>
 					{
@@ -68,7 +81,7 @@ export default function SidebarHeader(props) {
 								index={index}
 								stepStatus={step.stepDone}
 								stepStatusChangeHandler={props.stepStatusChangeHandler}
-								func={props.deleteStep}
+								deleteStep={props.deleteStep}
 								onStepChange={props.onStepChange}
 								enterHandler={enterHandler}
 							/>
@@ -81,7 +94,7 @@ export default function SidebarHeader(props) {
 
 				<input type={'text'} name='stepName'
 					placeholder='Enter next step`s title'
-					className="add-step__title" onKeyDown={props.addStep}
+					className="add-step__title" onKeyDown={(e) => onAddStepKeyDownHandler(e)}
 				/>
 			</div>
 		</div >

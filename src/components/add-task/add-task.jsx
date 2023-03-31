@@ -21,18 +21,30 @@ export default function AddTask(props) {
 		}
 	}
 
-	function inputEnterHandler(e) {
-		if (e.which === 13) props.addTask();
+	function onInputKeyDownHandler(e) {
+		if (e.code === 'Enter' && e.target.value !== '') {
+			props.addTask(e.target.value);
+
+			e.target.value = '';
+		};
+	}
+
+	function onIconClickHandler() {
+		let input = document.querySelector('.add-task__title');
+		if (input.value !== '') {
+			props.addTask(input.value);
+			input.value = '';
+		}
 	}
 
 	return (
 		<footer className='add-task' onClick={interactBlock}>
 			<div className="add-task__plus"></div>
 			<input className="add-task__title" type={'text'}
-				name='taskName' onKeyDown={inputEnterHandler}
+				name='taskName' onKeyDown={onInputKeyDownHandler}
 				placeholder='Enter next task`s title'
 			/>
-			<div className='add-task__send-icon ico-send' onClick={props.addTask}></div>
+			<div className='add-task__send-icon ico-send' onClick={onIconClickHandler}></div>
 
 		</footer>
 	)

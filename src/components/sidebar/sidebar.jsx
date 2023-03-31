@@ -43,7 +43,7 @@ export default function Sidebar(props) {
 				<SidebarHeader
 					addStep={props.addStep}
 					deleteStep={props.deleteStep}
-					onTitleChange={props.onTitleChange}
+					onTaskTitleChange={props.onTaskTitleChange}
 					onStepChange={props.onStepChange}
 
 					taskStatusChangeHandler={props.taskStatusChangeHandler}

@@ -91,32 +91,29 @@ export default function App() {
 		updateEditingTime();
 	}
 
-	function addStep(e) {
-		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
-			setTasks(tasks.map((task, i) => {
-				if (i == taskIndex) {
-					task.steps = [
-						...task.steps,
-						{
-							stepDone: false,
-							title: document.querySelector('.add-step__title').value
-						}
-					]
-				}
-				return task;
-			}));
+	function addStep(newStepTitle) {
+		setTasks(tasks.map((task, i) => {
+			if (i == taskIndex) {
+				task.steps = [
+					...task.steps,
+					{
+						stepDone: false,
+						title: newStepTitle
+					}
+				]
+			}
+			return task;
+		}));
 
-			updateEditingTime();
-			document.querySelector('.add-step__title').value = '';
-		}
+		updateEditingTime();
 	}
 
-	function onStepChange(e) {
+	function onStepChange(stepIndex, newText) {
 		setTasks(tasks.map((task, i) => {
 			if (i == taskIndex) {
 				task.steps = task.steps.map((step, i) => {
-					if (i == e.target.closest('.step').getAttribute('index')) {
-						step.title = e.target.textContent;
+					if (i == stepIndex) {
+						step.title = newText;
 					}
 					return step;
 				});
@@ -127,44 +124,38 @@ export default function App() {
 		updateEditingTime();
 	}
 
-	function deleteStep(e) {
-		if (e.target.classList.contains('delete-step')) {
-			setTasks(tasks.map((task, i) => {
-				if (i == taskIndex) {
-					task.steps = task.steps.filter((_, i) => i != e.target.closest('.step').getAttribute('index'));
-				}
-				return task;
-			}));
+	function deleteStep(stepIndex) {
+		setTasks(tasks.map((task, i) => {
+			if (i == taskIndex) {
+				task.steps = task.steps.filter((_, i) => i != stepIndex);
+			}
+			return task;
+		}));
 
-			updateEditingTime();
-		}
+		updateEditingTime();
 	}
 
-	function addTask() {
-		if (document.querySelector('.add-task__title').value !== '') {
-			setTasks([
-				...tasks,
-				{
-					title: document.querySelector('.add-task__title').value,
-					taskStatusDone: false,
-					isImportant: false,
-					steps: [],
-					note: '',
-					lastEdit: new Date().toLocaleString('ru', {
-						hour: 'numeric',
-						minute: 'numeric',
-					}),
-				}
-			]);
-
-			document.querySelector('.add-task__title').value = '';
-		}
+	function addTask(newTaskTitle) {
+		setTasks([
+			...tasks,
+			{
+				title: newTaskTitle,
+				taskStatusDone: false,
+				isImportant: false,
+				steps: [],
+				note: '',
+				lastEdit: new Date().toLocaleString('ru', {
+					hour: 'numeric',
+					minute: 'numeric',
+				}),
+			}
+		]);
 	}
 
-	function onTaskTitleChange(e) {
+	function onTaskTitleChange(newTaskTitle) {
 		setTasks(tasks.map((task, i) => {
 			if (taskIndex == i) {
-				task.title = e.target.textContent;
+				task.title = newTaskTitle;
 			}
 			return task;
 		}));
@@ -173,19 +164,13 @@ export default function App() {
 	}
 
 	function removeTask() {
-		document.querySelector('.wrapper').classList.remove('active');
-		document.querySelector('.popup').classList.remove('active');
-		document.querySelectorAll('.task').forEach((task) => {
-			task.classList.remove('active');
-		});
-
 		setTasks(tasks.filter((_, i) => i != taskIndex));
 	}
 
-	function saveNote(e) {
+	function saveNote(noteText) {
 		setTasks(tasks.map((task, i) => {
 			if (taskIndex == i) {
-				task.note = e.target.textContent;
+				task.note = noteText;
 			}
 			return task;
 		}));
@@ -231,7 +216,7 @@ export default function App() {
 
 				<TaskIndexContext.Provider value={taskIndex}>
 					<Sidebar
-						onTitleChange={onTaskTitleChange}
+						onTaskTitleChange={onTaskTitleChange}
 						onStepChange={onStepChange}
 
 						taskStatusChangeHandler={taskStatusChangeHandler}
