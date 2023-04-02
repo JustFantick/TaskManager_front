@@ -6,7 +6,7 @@ import { TaskIndexContext } from '../App.jsx';
 
 export default function Notes(props) {
 	function onNotesBlur(e) {
-		props.saveNote(e.target.textContent);
+		props.saveNote(e.target.innerText);
 	}
 
 	const tasksFromContext = useContext(TasksContext);
