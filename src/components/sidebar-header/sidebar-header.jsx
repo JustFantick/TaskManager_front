@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Status from '../status/status.jsx';
 import Step from '../step/step.jsx';
 
-import { TasksContext } from '../App.jsx';
-import { TaskIndexContext } from '../App.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { addStep, taskTitleChange, taskStatusChange } from '../../store/tasksSlice.js';
 
-export default function SidebarHeader(props) {
+export default function SidebarHeader() {
+	const dispatch = useDispatch();
+	const taskIndex = useSelector((state) => state.taskIndex.value);
+	const task = useSelector((state) => state.tasks[taskIndex]);
+
 	function interactInput(e) {
 		let target = e.target;
 		let plus = document.querySelector('.add-step__plus');
@@ -32,7 +36,10 @@ export default function SidebarHeader(props) {
 
 	function onAddStepKeyDownHandler(e) {
 		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
-			props.addStep(e.target.value);
+			dispatch(addStep({
+				taskIndex: taskIndex,
+				newStepTitle: e.target.value,
+			}))
 
 			//empty the input
 			e.target.value = '';
@@ -40,24 +47,25 @@ export default function SidebarHeader(props) {
 	}
 
 	function taskTitleChangeHandler(e) {
-		props.onTaskTitleChange(e.target.textContent);
+		dispatch(taskTitleChange({
+			taskIndex: taskIndex,
+			newTaskTitle: e.target.textContent,
+		}))
 	}
-
-	const tasksFromContext = useContext(TasksContext);
-	const taskIndexFromContext = useContext(TaskIndexContext);
 
 	return (
 		<div className='sidebar-header'>
 			<div className="sidebar-task">
 				<Status mb={20} pc={25}
-					status={tasksFromContext[taskIndexFromContext] ? tasksFromContext[taskIndexFromContext].taskStatusDone : false}
-					statusChangeHandler={props.taskStatusChangeHandler}
+					status={task ? task.taskStatus : false}
+					statusChangeHandler={() => dispatch(taskStatusChange(taskIndex))}
 				/>
 				<div
 					className={
-						tasksFromContext[taskIndexFromContext] ?
-							tasksFromContext[taskIndexFromContext].taskStatusDone ?
-								"sidebar-task__title done" : "sidebar-task__title" : "sidebar-task__title"
+						task ?
+							task.taskStatus ?
+								"sidebar-task__title done" :
+								"sidebar-task__title" : "sidebar-task__title"
 					}
 					contentEditable="true"
 					tabIndex={-1}
@@ -65,24 +73,17 @@ export default function SidebarHeader(props) {
 					onBlur={taskTitleChangeHandler}
 					onKeyDown={enterHandler}
 				>
-					{
-						tasksFromContext[taskIndexFromContext] ?
-							tasksFromContext[taskIndexFromContext].title : ''
-					}
+					{task ? task.title : ''}
 				</div>
 			</div>
 			<ul className='steps-list'>
 				{
-					tasksFromContext[taskIndexFromContext] ?
-						tasksFromContext[taskIndexFromContext].steps.map((step, index) => (
+					task ?
+						task.steps.map((step, index) => (
 							<Step
 								key={index}
-								text={step.title}
-								index={index}
-								stepStatus={step.stepDone}
-								stepStatusChangeHandler={props.stepStatusChangeHandler}
-								deleteStep={props.deleteStep}
-								onStepChange={props.onStepChange}
+								stepIndex={index}
+								taskIndex={taskIndex}
 								enterHandler={enterHandler}
 							/>
 						)) : ''

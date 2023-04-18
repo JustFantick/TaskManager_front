@@ -1,16 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { TasksContext } from '../App.jsx';
-import { TaskIndexContext } from '../App.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveNote } from '../../store/tasksSlice.js';
 
+export default function Notes() {
+	const dispatch = useDispatch();
+	const taskIndex = useSelector((state) => state.taskIndex.value);
+	const task = useSelector((state) => state.tasks[taskIndex]);
 
-export default function Notes(props) {
 	function onNotesBlur(e) {
-		props.saveNote(e.target.innerText);
+		dispatch(saveNote({
+			taskIndex: taskIndex,
+			noteText: e.target.innerText,
+		}));
 	}
-
-	const tasksFromContext = useContext(TasksContext);
-	const taskIndexFromContext = useContext(TaskIndexContext);
 
 	return (
 		<div className='sidebar-notes'
@@ -20,10 +23,7 @@ export default function Notes(props) {
 			suppressContentEditableWarning="true"
 			onBlur={onNotesBlur}
 		>
-			{
-				tasksFromContext[taskIndexFromContext] ?
-					tasksFromContext[taskIndexFromContext].note : ''
-			}
+			{task ? task.note : ''}
 		</div>
 	)
 }

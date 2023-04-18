@@ -1,21 +1,27 @@
-import React from 'react'
+import React from 'react';
 
-export default function Header(props) {
-	let options = {
-		month: 'long',
-		day: 'numeric',
-		weekday: 'short',
-	};
+import { useDispatch } from 'react-redux';
+import { refreshTasks } from '../../store/tasksSlice.js';
+
+
+export default function Header() {
+	const dispatch = useDispatch();
 
 	function interactRefreshButton() {
 		let button = document.querySelector('.ico-refresh');
 		button.classList.add('active');
 
 		setTimeout(function () {
-			props.refreshTasks();
+			dispatch(refreshTasks());
 			button.classList.remove('active');
 		}, 700);
 	}
+
+	let options = {
+		month: 'long',
+		day: 'numeric',
+		weekday: 'short',
+	};
 
 	return (
 		<header className="header">

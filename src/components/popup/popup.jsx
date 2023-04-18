@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { TasksContext } from '../App.jsx';
-import { TaskIndexContext } from '../App.jsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeTask } from '../../store/tasksSlice.js';
 
-export default function DeleteTaskPopup(props) {
+export default function DeleteTaskPopup() {
 	function hidePopup() {
 		document.querySelector('.popup').classList.remove('active');
 	}
-	function outBodyClick(e) {
+	function outBodyClickHandler(e) {
 		if (!e.target.closest('.popup__body')) hidePopup();
 	}
 
@@ -18,19 +18,20 @@ export default function DeleteTaskPopup(props) {
 			task.classList.remove('active');
 		});
 
-		props.removeTask();
+		dispatch(removeTask(currentTaskIndex));
 	}
 
-	const tasksFromContext = useContext(TasksContext);
-	const taskIndexFromContext = useContext(TaskIndexContext);
+	const currentTaskIndex = useSelector((state) => state.taskIndex.value);
+	const currentTask = useSelector((state) => state.tasks[currentTaskIndex]);
+	const dispatch = useDispatch();
 
 	return (
-		<div className='popup' onClick={outBodyClick}>
+		<div className='popup' onClick={outBodyClickHandler}>
 			<div className="popup__body">
 				<div className='popup__question'>
 					You want to delete the '{
-						tasksFromContext[taskIndexFromContext] ?
-							tasksFromContext[taskIndexFromContext].title : ''
+						currentTask ?
+							currentTask.title : ''
 					}', right?
 				</div>
 				<button onClick={hidePopup} className='popup__cancel-btn'>Cancel</button>

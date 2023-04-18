@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { TasksContext } from '../App.jsx';
-import { TaskIndexContext } from '../App.jsx';
+import { useSelector } from 'react-redux';
 
 export default function SidebarFooter(props) {
 	function openPopup() {
@@ -20,17 +19,14 @@ export default function SidebarFooter(props) {
 		});
 	}
 
-	const tasksFromContext = useContext(TasksContext);
-	const taskIndexFromContext = useContext(TaskIndexContext);
+	const taskIndex = useSelector((state) => state.taskIndex.value);
+	const task = useSelector((state) => state.tasks[taskIndex]);
 
 	return (
 		<div className='sidebar__bottom'>
 			<div className='ico-back-Btn' onClick={hideSidebar}></div>
 			<div className='edditing-time'>
-				Last edit: {
-					tasksFromContext[taskIndexFromContext] ?
-						tasksFromContext[taskIndexFromContext].lastEdit : ''
-				}
+				Last edit: {task ? task.lastEdit : ''}
 			</div>
 			<div onClick={openPopup} className='delete ico-bin'></div>
 		</div>

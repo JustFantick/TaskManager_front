@@ -1,12 +1,17 @@
 import React from 'react'
 import Status from '../status/status.jsx';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { taskStatusChange, taskStarStatusChange } from '../../store/tasksSlice.js';
+import { setTaskIndex } from '../../store/taskIndexSlice.js';
+
 function Task(props) {
 	function chooseTask(e) {
 		let targetParent = e.target.closest('.task');
 
 		if (!e.target.closest('.status') && !e.target.closest('.task__star') && !targetParent.classList.contains('active')) {
-			props.setTaskIndex(targetParent.getAttribute('index'));
+			dispatch(setTaskIndex(props.index));
+			//props.setTaskIndex(targetParent.getAttribute('index'));
 
 			document.querySelectorAll('.task').forEach((task) => {
 				task.classList.remove('active');
@@ -32,19 +37,22 @@ function Task(props) {
 		}
 	}
 
+	const dispatch = useDispatch();
+	const taskStatus = useSelector((state) => state.tasks[props.index].taskStatus);
+	const taskImportance = useSelector((state) => state.tasks[props.index].isImportant);
+	const taskTitle = useSelector((state) => state.tasks[props.index].title);
+
 	return (
 		<div className='task' onClick={chooseTask} index={props.index}>
-			<Status pc={25} mb={20} status={props.taskStatus}
-				statusChangeHandler={props.taskStatusChangeHandler} />
+			<Status pc={25} mb={20} status={taskStatus}
+				statusChangeHandler={() => dispatch(taskStatusChange(props.index))} />
 
-			<div className={props.taskStatus ? "task__title done" : "task__title"}> {props.title} </div>
+			<div className={taskStatus ? "task__title done" : "task__title"}> {taskTitle} </div>
 
 			<div
-				onClick={() => props.starStatusChange(props.index)}
+				onClick={() => dispatch(taskStarStatusChange(props.index))}
 				className={
-					props.isImportant
-						? "task__star ico-star active"
-						: "task__star ico-star"
+					taskImportance ? "task__star ico-star active" : "task__star ico-star"
 				}
 			>
 

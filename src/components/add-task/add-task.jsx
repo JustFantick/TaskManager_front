@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../../store/tasksSlice';
 
 export default function AddTask(props) {
 	function interactBlock(e) {
@@ -21,10 +23,11 @@ export default function AddTask(props) {
 		}
 	}
 
+	const dispatch = useDispatch();
+
 	function onInputKeyDownHandler(e) {
 		if (e.code === 'Enter' && e.target.value !== '') {
-			props.addTask(e.target.value);
-
+			dispatch(addTask(e.target.value));
 			e.target.value = '';
 		};
 	}
@@ -32,7 +35,7 @@ export default function AddTask(props) {
 	function onIconClickHandler() {
 		let input = document.querySelector('.add-task__title');
 		if (input.value !== '') {
-			props.addTask(input.value);
+			dispatch(addTask(input.value));
 			input.value = '';
 		}
 	}

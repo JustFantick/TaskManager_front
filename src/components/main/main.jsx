@@ -6,14 +6,11 @@ import TaskContainer from '../taskContainer/task-container.jsx';
 export default function Main(props) {
 	return (
 		<main className="main">
-			<Header refreshTasks={props.refreshTasks} />
+			<Header />
 
-			<TaskContainer
-				setTaskIndex={props.setTaskIndex}
-				starStatusChange={props.starStatusChange}
-				taskStatusChangeHandler={props.taskStatusChangeHandler} />
+			<TaskContainer />
 
-			<AddTask addTask={props.addTask} />
+			<AddTask />
 		</main>
 	)
 }

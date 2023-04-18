@@ -1,9 +1,16 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Task from '../task/task.jsx';
 
-import { TasksContext } from '../App.jsx';
+import { useSelector } from 'react-redux';
 
-export default function TaskContainer(props) {
+export default function TaskContainer() {
+	useEffect(() => {
+		let headerHeight = document.querySelector('.header').offsetHeight;
+
+		var taskContainerBody = document.querySelector('.tasks-container__body');
+		taskContainerBody.style.paddingTop = headerHeight + 'px';
+	}, []);
+
 	function scrollHandler() {
 		let header = document.querySelector('.header');
 		let main = document.querySelector('.main');
@@ -15,14 +22,7 @@ export default function TaskContainer(props) {
 		}
 	}
 
-	useEffect(() => {
-		let headerHeight = document.querySelector('.header').offsetHeight;
-
-		var taskContainerBody = document.querySelector('.tasks-container__body');
-		taskContainerBody.style.paddingTop = headerHeight + 'px';
-	}, []);
-
-	const tasksFromContext = useContext(TasksContext);
+	const tasksfromState = useSelector((state) => state.tasks);
 
 	return (
 		<div className="tasks-container">
@@ -31,12 +31,8 @@ export default function TaskContainer(props) {
 				onScroll={scrollHandler}
 			>
 				{
-					tasksFromContext.map((task, index) => (
-						<Task key={index} index={index} title={task.title} setTaskIndex={props.setTaskIndex}
-							isImportant={task.isImportant}
-							starStatusChange={props.starStatusChange}
-							taskStatusChangeHandler={props.taskStatusChangeHandler}
-							taskStatus={tasksFromContext[index].taskStatusDone} />
+					tasksfromState.map((task, index) => (
+						<Task key={index} index={index} />
 					))
 				}
 			</div>

@@ -40,17 +40,9 @@ export default function Sidebar(props) {
 	return (
 		<aside className="sidebar">
 			<div className='sidebar__header'>
-				<SidebarHeader
-					addStep={props.addStep}
-					deleteStep={props.deleteStep}
-					onTaskTitleChange={props.onTaskTitleChange}
-					onStepChange={props.onStepChange}
+				<SidebarHeader />
 
-					taskStatusChangeHandler={props.taskStatusChangeHandler}
-					stepStatusChangeHandler={props.stepStatusChangeHandler}
-				/>
-
-				<Notes saveNote={props.saveNote} />
+				<Notes />
 
 			</div>
 
