@@ -7,7 +7,7 @@ export const taskIndexSlice = createSlice({
 	},
 	reducers: {
 		setTaskIndex: (state, newIndex) => {
-			state.value += newIndex.payload;
+			state.value = newIndex.payload;
 		},
 	},
 });
