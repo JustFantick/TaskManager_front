@@ -2,12 +2,15 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/tasksSlice';
 
-export default function AddTask(props) {
+export default function AddTask() {
+	const dispatch = useDispatch();
+
+	const parent = document.querySelector('.add-task');
+	const input = document.querySelector('.add-task__title');
+	const plus = document.querySelector('.add-task__plus');
+
 	function interactBlock(e) {
 		let target = e.target;
-		let plus = document.querySelector('.add-task__plus');
-		let input = document.querySelector('.add-task__title');
-		let parent = document.querySelector('.add-task');
 
 		if (target === input || target === plus && !parent.classList.contains('focused')) {
 			parent.classList.add('focused');
@@ -23,8 +26,6 @@ export default function AddTask(props) {
 		}
 	}
 
-	const dispatch = useDispatch();
-
 	function onInputKeyDownHandler(e) {
 		if (e.code === 'Enter' && e.target.value !== '') {
 			dispatch(addTask(e.target.value));
@@ -33,7 +34,6 @@ export default function AddTask(props) {
 	}
 
 	function onIconClickHandler() {
-		let input = document.querySelector('.add-task__title');
 		if (input.value !== '') {
 			dispatch(addTask(input.value));
 			input.value = '';
