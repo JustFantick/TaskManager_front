@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+function updateEditTime(state, taskIndex) {
+	state[taskIndex].lastEdit = new Date().toLocaleString('ru', {
+		hour: 'numeric',
+		minute: 'numeric',
+	});
+}
+
 export const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState: [
@@ -56,6 +63,7 @@ export const tasksSlice = createSlice({
 
 		taskStatusChange: (state, taskIndex) => {
 			state[taskIndex.payload].taskStatus = !state[taskIndex.payload].taskStatus;
+			updateEditTime(state, taskIndex.payload);
 		},
 
 		//"action" require String value
@@ -81,15 +89,17 @@ export const tasksSlice = createSlice({
 
 		taskTitleChange: (state, action) => {
 			state[action.payload.taskIndex].title = action.payload.newTaskTitle;
+			updateEditTime(state, action.payload.taskIndex);
 		},
 
 		taskStarStatusChange: (state, taskIndex) => {
 			state[taskIndex.payload].isImportant = !state[taskIndex.payload].isImportant;
+			updateEditTime(state, taskIndex.payload);
 		},
 
 		saveNote: (state, action) => {
-			console.log(action);
 			state[action.payload.taskIndex].note = action.payload.noteText;
+			updateEditTime(state, action.payload.taskIndex);
 		},
 
 		addStep: (state, action) => {
@@ -98,20 +108,24 @@ export const tasksSlice = createSlice({
 					stepDone: false,
 					title: action.payload.newStepTitle,
 				}
-			)
+			);
+			updateEditTime(state, action.payload.taskIndex);
 		},
 
 		stepStatusChange: (state, action) => {
 			state[action.payload.taskIndex].steps[action.payload.stepIndex].stepDone = !state[action.payload.taskIndex].steps[action.payload.stepIndex].stepDone;
+
+			updateEditTime(state, action.payload.taskIndex);
 		},
 
 		stepTitleChange: (state, action) => {
-			console.log(action);
 			state[action.payload.taskIndex].steps[action.payload.stepIndex].title = action.payload.newStepTitle;
+			updateEditTime(state, action.payload.taskIndex);
 		},
 
 		removeStep: (state, action) => {
 			state[action.payload.taskIndex].steps.splice(action.payload.stepIndex, 1);
+			updateEditTime(state, action.payload.taskIndex);
 		},
 	},
 });
