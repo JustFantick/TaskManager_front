@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { refreshTasks } from '../../store/tasksSlice.js';
 
 import { CSSTransition } from 'react-transition-group';
-import { useState } from 'react';
 
 export default function Header() {
 	const dispatch = useDispatch();

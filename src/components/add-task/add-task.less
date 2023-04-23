@@ -99,29 +99,15 @@
 	transform: translate(0, 100%);
 	@transDuration: 0.5s;
 
-	&-enter {
-		transform: translate(0, 100%);
-		opacity: 0;
-	}
-
-	&-enter-active {
-		opacity: 1;
-		transform: translate(0, 0);
-		transition: all @transDuration ease-in-out;
-	}
-
+	&-enter-active,
 	&-enter-done {
 		opacity: 1;
 		transform: translate(0, 0);
 		transition: all @transDuration ease-in-out;
 	}
 
-	&-exit {
-		opacity: 1;
-		transform: translate(0, 0);
-	}
-
-	&-exit-active {
+	&-exit-active,
+	&-exit-done {
 		opacity: 0;
 		transform: translate(0, 100%);
 		transition: all @transDuration ease-in-out;
