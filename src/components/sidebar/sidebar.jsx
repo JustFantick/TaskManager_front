@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import SidebarHeader from '../sidebar-header/sidebar-header.jsx';
 import Notes from '../notes/notes.jsx';
 import SidebarFooter from '../sidebar-footer/sidebar-footer.jsx';
+import DeleteTaskPopup from '../popup/popup.jsx';
 
 export default function Sidebar(props) {
 	const [isPc, setIsPc] = useState(true);
+	const [popupOpen, setPopupOpen] = useState(false);
+
 
 	useEffect(() => {
 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
@@ -46,7 +49,9 @@ export default function Sidebar(props) {
 
 			</div>
 
-			<SidebarFooter isPc={isPc} />
+			<SidebarFooter isPc={isPc} activatePopup={() => setPopupOpen(true)} />
+
+			<DeleteTaskPopup popupOpen={popupOpen} disactivatePopup={() => setPopupOpen(false)} />
 		</aside>
 	)
 }

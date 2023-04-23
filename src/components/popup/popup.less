@@ -75,7 +75,15 @@
 	opacity: 0;
 	transition: all 0.3s linear 0.15s; //onClosePopup
 
-	&.active {
+	&-exit-active,
+	&-exit-done {
+		visibility: hidden;
+		opacity: 0;
+		transition: all 0.3s linear 0.15s; //onClosePopup
+	}
+
+	&-enter-active,
+	&-enter-done {
 		visibility: visible;
 		opacity: 1;
 		transition: all 0.25s linear; //onOpenPopup
@@ -86,4 +94,5 @@
 			transition: all 0.15s linear 0.15s; //onOpenPopup
 		}
 	}
+
 }

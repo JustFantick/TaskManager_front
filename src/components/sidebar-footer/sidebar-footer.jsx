@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 
 export default function SidebarFooter(props) {
 	function openPopup() {
-		document.querySelector('.popup').classList.add('active');
+		//document.querySelector('.popup').classList.add('active');
+		props.activatePopup();
+
 		if (props.isPc) {
 			window.addEventListener("keyup", (e) => {
 				if (e.code === 'Escape') document.querySelector('.popup').classList.remove('active');
