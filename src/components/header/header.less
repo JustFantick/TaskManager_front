@@ -31,4 +31,31 @@
 			font-size: #adapt(25, 18)[@value];
 		}
 	}
+
+	//appearance-animation
+	opacity: 0;
+	@transDuration: 0.7s;
+
+	&-enter {
+		opacity: 0;
+	}
+
+	&-enter-active {
+		opacity: 1;
+		transition: opacity @transDuration ease-in-out;
+	}
+
+	&-enter-done {
+		opacity: 1;
+		transition: opacity @transDuration ease-in-out;
+	}
+
+	&-exit {
+		opacity: 1;
+	}
+
+	&-exit-active {
+		opacity: 0;
+		transition: opacity @transDuration ease-in-out;
+	}
 }

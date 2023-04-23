@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/tasksSlice';
 
+import { CSSTransition } from 'react-transition-group';
+
 export default function AddTask() {
 	const dispatch = useDispatch();
+
+	const [inStart, setinStart] = useState(false);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setinStart(true);
+		}, 500);
+	}, []);
 
 	const parent = document.querySelector('.add-task');
 	const input = document.querySelector('.add-task__title');
@@ -41,14 +51,16 @@ export default function AddTask() {
 	}
 
 	return (
-		<footer className='add-task' onClick={interactBlock}>
-			<div className="add-task__plus"></div>
-			<input className="add-task__title" type={'text'}
-				name='taskName' onKeyDown={onInputKeyDownHandler}
-				placeholder='Enter next task`s title'
-			/>
-			<div className='add-task__send-icon ico-send' onClick={onIconClickHandler}></div>
+		<CSSTransition in={inStart} timeout={500} classNames={'add-task'}>
+			<footer className='add-task' onClick={interactBlock}>
+				<div className="add-task__plus"></div>
+				<input className="add-task__title" type={'text'}
+					name='taskName' onKeyDown={onInputKeyDownHandler}
+					placeholder='Enter next task`s title'
+				/>
+				<div className='add-task__send-icon ico-send' onClick={onIconClickHandler}></div>
 
-		</footer>
+			</footer>
+		</CSSTransition>
 	)
 }

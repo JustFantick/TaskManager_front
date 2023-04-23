@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { refreshTasks } from '../../store/tasksSlice.js';
 
+import { CSSTransition } from 'react-transition-group';
+import { useState } from 'react';
 
 export default function Header() {
 	const dispatch = useDispatch();
@@ -17,20 +19,30 @@ export default function Header() {
 		}, 700);
 	}
 
-	let options = {
+	const [animStart, setAnimStart] = useState(false);
+	const nodeRef = useRef(null);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setAnimStart(!animStart);
+		}, 500);
+	}, []);
+
+	const options = {
 		month: 'long',
 		day: 'numeric',
 		weekday: 'short',
 	};
 
 	return (
-		<header className="header">
-			<div className="header__title">
-				<h1>Your`s day</h1>
-				<p>{new Date().toLocaleString('en-EU', options)}</p>
-			</div>
-			<div className="ico-refresh" onClick={interactRefreshButton}>
-			</div>
-		</header>
+		<CSSTransition ref={nodeRef} in={animStart} timeout={700} classNames={'header'}>
+			<header className="header">
+				<div className="header__title">
+					<h1>Your`s day</h1>
+					<p>{new Date().toLocaleString('en-EU', options)}</p>
+				</div>
+				<div className="ico-refresh" onClick={interactRefreshButton}></div>
+			</header>
+		</CSSTransition>
 	)
 }
