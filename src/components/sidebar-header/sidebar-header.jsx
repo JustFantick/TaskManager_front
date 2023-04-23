@@ -5,6 +5,8 @@ import Step from '../step/step.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { addStep, taskTitleChange, taskStatusChange } from '../../store/tasksSlice.js';
 
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+
 export default function SidebarHeader() {
 	const dispatch = useDispatch();
 	const taskIndex = useSelector((state) => state.taskIndex.value);
@@ -53,6 +55,8 @@ export default function SidebarHeader() {
 		}))
 	}
 
+	const [listRef] = useAutoAnimate();//auto-animate adding/removing tasks
+
 	return (
 		<div className='sidebar-header'>
 			<div className="sidebar-task">
@@ -76,7 +80,7 @@ export default function SidebarHeader() {
 					{task ? task.title : ''}
 				</div>
 			</div>
-			<ul className='steps-list'>
+			<ul className='steps-list' ref={listRef}>
 				{
 					task ?
 						task.steps.map((step, index) => (
