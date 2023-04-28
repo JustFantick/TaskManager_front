@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../button/button.jsx';
+import arrow from '../../img/side-arrow.svg';
 
 export default function Authorization() {
 	return (
@@ -28,7 +29,7 @@ export default function Authorization() {
 					</Button>
 
 					<Button onClickHandler={() => console.log('Authorize')}>
-						Authorize
+						Authorize <img src={arrow} alt="arrow" />
 					</Button>
 
 				</div>
