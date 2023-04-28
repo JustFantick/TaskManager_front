@@ -3,9 +3,10 @@ import background from "../img/bg1.webp"
 import Main from "./main/main.jsx";
 import Sidebar from "./sidebar/sidebar.jsx";
 import Authorization from './authorization/authorization.jsx';
+import { useSelector } from 'react-redux';
 
 export default function App() {
-	const [authorized, setAuthorized] = useState(false);
+	const authorizedStatus = useSelector((state) => state.authorizationStatus.status);
 
 	const tasksBlock =
 		<React.Fragment>
@@ -13,11 +14,10 @@ export default function App() {
 			<Sidebar />
 		</React.Fragment>;
 
-
 	return (
 		<div className="wrapper" style={{ backgroundImage: `url(${background})` }}>
 
-			{authorized ? tasksBlock : <Authorization />}
+			{authorizedStatus === 'non-authorized' ? <Authorization /> : tasksBlock}
 
 		</div>
 	)
