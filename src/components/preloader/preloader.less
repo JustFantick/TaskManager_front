@@ -6,35 +6,66 @@
 	height: 100%;
 	width: 100%;
 
-	background-color: rgba(0, 0, 0, 0.5);
+	@animDuration: 0.3s;
+	transition: all @animDuration ease-in;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
+	&__body {
+		transition: all @animDuration ease-in;
+		transform: translate(0, -100%);
+		opacity: 0;
+	}
+
 	&__circle {
-		height: 100px;
-		width: 100px;
+		height: #adapt(90, 60)[@value];
+		width: #adapt(90, 60)[@value];
 		background-color: transparent;
 
 		border-radius: 50%;
 		border: 5px solid white;
 		border-left-color: transparent;
-
-		animation: rotation 1.5s linear 0s infinite;
 	}
 
-	@keyframes rotation {
-		0% {
-			transform: rotate(0);
+	&-exit-active,
+	&-exit-done {
+		background-color: transparent;
+
+		.preloader__body {
+			opacity: 0;
+			transform: translate(0, -100%);
+			transition: all @animDuration ease-in;
+		}
+	}
+
+	&-enter-active,
+	&-enter-done {
+		background-color: rgba(0, 0, 0, 0.5);
+
+		.preloader__body {
+			transition: all @animDuration ease-in 0s;
+			transform: translate(0, 0%);
+			opacity: 1;
 		}
 
-		50% {
-			transform: rotate(210deg);
+		.preloader__circle {
+			animation: rotation 1s linear infinite;
 		}
 
-		100% {
-			transform: rotate(360deg);
+		@keyframes rotation {
+			0% {
+				transform: rotate(0);
+			}
+
+			50% {
+				transform: rotate(210deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
 		}
 	}
 }

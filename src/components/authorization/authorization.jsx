@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../button/button.jsx';
 import arrow from '../../img/side-arrow.svg';
 import Preloader from '../preloader/preloader.jsx';
 
 export default function Authorization() {
+	const [showLoader, setShowLoader] = useState(false);
+
+	function authorizeClickhandler() {
+		setShowLoader(true);
+
+		setTimeout(() => {
+			setShowLoader(false);
+		}, 3000);
+	}
+
 	return (
 		<React.Fragment>
 			<div className='authorization'>
@@ -30,7 +40,7 @@ export default function Authorization() {
 							Register & log in
 						</Button>
 
-						<Button onClickHandler={() => console.log('Authorize')}>
+						<Button onClickHandler={authorizeClickhandler}>
 							Authorize <img src={arrow} alt="arrow" />
 						</Button>
 
@@ -40,7 +50,7 @@ export default function Authorization() {
 
 			</div>
 
-			<Preloader inAnim={false} />
+			<Preloader inAnim={showLoader} />
 		</React.Fragment>
 	)
 }
