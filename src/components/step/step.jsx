@@ -28,7 +28,7 @@ export default function Step(props) {
 
 	return (
 		<li className='step' onClick={(e) => onStepClickHandler(e)} index={props.stepIndex}>
-			<Status status={task.steps[props.stepIndex].stepDone} pc={21} mb={17}
+			<Status status={task.steps[props.stepIndex].stepStatus} pc={21} mb={17}
 				statusChangeHandler={() => dispatch(stepStatusChange({
 					taskIndex: props.taskIndex,
 					stepIndex: props.stepIndex,

@@ -14,7 +14,7 @@ export const tasksSlice = createSlice({
 			title: 'Test task',
 			taskStatus: false,
 			isImportant: false,
-			steps: [{ stepDone: false, title: '1' }, { stepDone: false, title: '2' }],
+			steps: [{ stepStatus: false, title: '1' }, { stepStatus: false, title: '2' }],
 			note: 'Note_1',
 			lastEdit: new Date().toLocaleString('ru', {
 				hour: 'numeric',
@@ -40,7 +40,7 @@ export const tasksSlice = createSlice({
 					title: 'Test task',
 					taskStatus: false,
 					isImportant: false,
-					steps: [{ stepDone: false, title: '1' }, { stepDone: false, title: '2' }],
+					steps: [{ stepStatus: false, title: '1' }, { stepStatus: false, title: '2' }],
 					note: '',
 					lastEdit: new Date().toLocaleString('ru', {
 						hour: 'numeric',
@@ -105,7 +105,7 @@ export const tasksSlice = createSlice({
 		addStep: (state, action) => {
 			state[action.payload.taskIndex].steps.push(
 				{
-					stepDone: false,
+					stepStatus: false,
 					title: action.payload.newStepTitle,
 				}
 			);
@@ -113,7 +113,7 @@ export const tasksSlice = createSlice({
 		},
 
 		stepStatusChange: (state, action) => {
-			state[action.payload.taskIndex].steps[action.payload.stepIndex].stepDone = !state[action.payload.taskIndex].steps[action.payload.stepIndex].stepDone;
+			state[action.payload.taskIndex].steps[action.payload.stepIndex].stepStatus = !state[action.payload.taskIndex].steps[action.payload.stepIndex].stepStatus;
 
 			updateEditTime(state, action.payload.taskIndex);
 		},
