@@ -50,17 +50,32 @@ export default function Authorization() {
 		}
 	}
 
-	function authorizeClickhandler() {
+	async function authorizeClickhandler() {
 		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
 			setShowLoader(true);
 
-			setTimeout(() => {
-				setShowLoader(false);
-				setAuthorizationInAnim(false);
+			await fetch(`http://localhost:2210/login?login=${loginlInput.current.value}&password=${passwordInput.current.value}`)
+				.then(response => response.json())
+				.then(data => {
+					if (data.hasOwnProperty('errorMessage')) {
+						switch (data.errorMessage) {
+							case 'user not found':
+								console.log("user is not exist in DataBase");
+								break;
+							case 'invalid password':
+								console.log("invalid password");
+								break;
+						}
+					} else {
+						console.log(data);
+					}
 
-				//500ms for close-anim of this component
-				setTimeout(() => dispatch(setAuthorized()), 500);
-			}, 1500);
+					setShowLoader(false);
+					setAuthorizationInAnim(false);
+
+					//500ms for close-anim of this component
+					setTimeout(() => dispatch(setAuthorized()), 500);
+				});
 		} else {
 			validateLogin(loginlInput.current.value);
 			validatePassword(passwordInput.current.value);
