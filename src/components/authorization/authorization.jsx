@@ -20,32 +20,38 @@ export default function Authorization() {
 	const [emailValidStatus, setEmailValidStatus] = useState('');
 	const [passwordValidStatus, setPasswordValidStatus] = useState('');
 
+	const [emailLabelText, setEmailLabeltext] = useState('Enter your login');
+	const [passwordLabelText, setPasswordLabeltext] = useState('Enter your password');
+
 	const [loginlInput, passwordInput, loginlLabel, passwordLabel] = [
 		useRef(null), useRef(null), useRef(null), useRef(null),
 	];
 
 	function validateLogin(currentInputValue) {
 		if (currentInputValue === '') {
-			console.log('empty');
+			setEmailLabeltext('Enter your login');
 			setEmailValidStatus('non-valid');
 		} else if (/\s/.test(currentInputValue)) {
-			console.log('input shouldn`t got any white spaces');
+			setEmailLabeltext('Input shouldn`t got any white spaces');
 			setEmailValidStatus('non-valid');
 		} else if (/^\d+$/.test(currentInputValue)) {
-			console.log('str contains only numbers');
+			setEmailLabeltext('Login shouldn`t consist only of digits');
 			setEmailValidStatus('non-valid');
 		} else {
+			setEmailLabeltext('Login validated');
 			setEmailValidStatus('valid');
-			console.log('valid');
 		}
 	}
 
 	function validatePassword(currentInputValue) {
 		if (currentInputValue === '') {
+			setPasswordLabeltext('Enter your password');
 			setPasswordValidStatus('non-valid');
 		} else if (currentInputValue.length < 4) {
+			setPasswordLabeltext('Password must be at least 4 symbols long');
 			setPasswordValidStatus('non-valid');
 		} else {
+			setPasswordLabeltext('Password validated');
 			setPasswordValidStatus('valid');
 		}
 	}
@@ -54,28 +60,28 @@ export default function Authorization() {
 		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
 			setShowLoader(true);
 
-			await fetch(`http://localhost:2210/login?login=${loginlInput.current.value}&password=${passwordInput.current.value}`)
-				.then(response => response.json())
-				.then(data => {
-					if (data.hasOwnProperty('errorMessage')) {
-						switch (data.errorMessage) {
-							case 'user not found':
-								console.log("user is not exist in DataBase");
-								break;
-							case 'invalid password':
-								console.log("invalid password");
-								break;
-						}
-					} else {
-						console.log(data);
-					}
+			const response = await fetch(`http://localhost:2210/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`);
+			const data = await response.json();
 
-					setShowLoader(false);
-					setAuthorizationInAnim(false);
+			if (data.hasOwnProperty('errorMessage')) {
+				switch (data.errorMessage) {
+					case 'user not found':
+						setEmailLabeltext('User doesn`t exist');
+						break;
+					case 'invalid password':
+						setPasswordLabeltext('Invalid password');
+						break;
+				}
+			} else if (Object.keys(data).length !== 0) {
+				//500ms for close-anim of this component
+				setTimeout(() => dispatch(setAuthorized()), 500);
+				setAuthorizationInAnim(false);
+			} else {
+				console.log("Unexpected error");
+			}
 
-					//500ms for close-anim of this component
-					setTimeout(() => dispatch(setAuthorized()), 500);
-				});
+			setShowLoader(false);
+
 		} else {
 			validateLogin(loginlInput.current.value);
 			validatePassword(passwordInput.current.value);
@@ -98,7 +104,7 @@ export default function Authorization() {
 
 						<div className="authorization__inputs">
 							<div className="input-group">
-								<label htmlFor='email-input' ref={loginlLabel} className="input-group__label">Enter your login</label>
+								<label htmlFor='email-input' ref={loginlLabel} className="input-group__label">{emailLabelText}</label>
 								<input placeholder='email@gmail.com' type='email'
 									ref={loginlInput}
 									onBlur={(e) => validateLogin(e.target.value)}
@@ -106,7 +112,7 @@ export default function Authorization() {
 							</div>
 
 							<div className="input-group">
-								<label htmlFor='password-input' ref={passwordLabel} className="input-group__label">Enter your password</label>
+								<label htmlFor='password-input' ref={passwordLabel} className="input-group__label">{passwordLabelText}</label>
 								<input type='password' placeholder='_____'
 									ref={passwordInput}
 									onBlur={(e) => validatePassword(e.target.value)}
