@@ -5,6 +5,7 @@ import Preloader from '../preloader/preloader.jsx';
 
 import { useDispatch } from 'react-redux';
 import { setAuthorized } from '../../store/authorizationStatus.js';
+import { setUserId, setUserName } from '../../store/userDataSlice.js';
 import { CSSTransition } from 'react-transition-group';
 
 export default function Authorization() {
@@ -56,15 +57,15 @@ export default function Authorization() {
 		}
 	}
 
-	async function authorizeClickhandler() {
+	async function authorizeClickHandler() {
 		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
 			setShowLoader(true);
 
-			const response = await fetch(`http://localhost:2210/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`);
+			const response = await fetch(`http://localhost:2210/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'GET' });
 			const data = await response.json();
 
-			if (data.hasOwnProperty('errorMessage')) {
-				switch (data.errorMessage) {
+			if (data.status === 0) {
+				switch (data.errorType) {
 					case 'user not found':
 						setEmailLabeltext('User doesn`t exist');
 						break;
@@ -72,10 +73,41 @@ export default function Authorization() {
 						setPasswordLabeltext('Invalid password');
 						break;
 				}
-			} else if (Object.keys(data).length !== 0) {
+			} else if (data.status === 1) {
 				//500ms for close-anim of this component
 				setTimeout(() => dispatch(setAuthorized()), 500);
 				setAuthorizationInAnim(false);
+
+				dispatch(setUserName(data.userLogin));
+				dispatch(setUserId(data.userId));
+			} else {
+				console.log("Unexpected error");
+			}
+
+			setShowLoader(false);
+
+		} else {
+			validateLogin(loginlInput.current.value);
+			validatePassword(passwordInput.current.value);
+		}
+	}
+
+	async function registerClickHandler() {
+		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
+			setShowLoader(true);
+
+			const response = await fetch(`http://localhost:2210/registerNewUser?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'POST' });
+			const data = await response.json();
+
+			if (data.status === 0) {
+				setEmailLabeltext('User already exist');
+			} else if (data.status === 1) {
+				//500ms for close-anim of this component
+				setTimeout(() => dispatch(setAuthorized()), 500);
+				setAuthorizationInAnim(false);
+
+				dispatch(setUserName(data.userLogin));
+				dispatch(setUserId(data.userId));
 			} else {
 				console.log("Unexpected error");
 			}
@@ -122,11 +154,11 @@ export default function Authorization() {
 						</div>
 
 						<div className="authorization__buttons">
-							<Button onClickHandler={() => console.log('Register')}>
+							<Button onClickHandler={registerClickHandler}>
 								Register & log in
 							</Button>
 
-							<Button onClickHandler={authorizeClickhandler}>
+							<Button onClickHandler={authorizeClickHandler}>
 								Authorize <img src={arrow} alt="arrow" />
 							</Button>
 
