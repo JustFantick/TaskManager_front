@@ -6,10 +6,17 @@ import Preloader from '../preloader/preloader.jsx';
 import { useDispatch } from 'react-redux';
 import { setAuthorized } from '../../store/authorizationStatus.js';
 import { setUserId, setUserName } from '../../store/userDataSlice.js';
+import { setTasks } from '../../store/tasksSlice.js';
 import { CSSTransition } from 'react-transition-group';
 
 export default function Authorization() {
 	const dispatch = useDispatch();
+
+	async function downloadUserData(userId) {
+		const requestJSON = await fetch(`http://localhost:2210/getTasks?userId=${userId}`, { method: 'GET' });
+		const result = await requestJSON.json();
+		dispatch(setTasks(result));
+	}
 
 	const [authorizationInAnim, setAuthorizationInAnim] = useState(false);
 	const [showLoader, setShowLoader] = useState(false);
@@ -80,6 +87,8 @@ export default function Authorization() {
 
 				dispatch(setUserName(data.userLogin));
 				dispatch(setUserId(data.userId));
+
+				downloadUserData(data.userId);
 			} else {
 				console.log("Unexpected error");
 			}
@@ -108,6 +117,8 @@ export default function Authorization() {
 
 				dispatch(setUserName(data.userLogin));
 				dispatch(setUserId(data.userId));
+
+				downloadUserData(data.userId);
 			} else {
 				console.log("Unexpected error");
 			}
