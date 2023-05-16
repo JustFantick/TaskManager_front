@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshTasks } from '../../store/tasksSlice.js';
 
 import { CSSTransition } from 'react-transition-group';
 
 export default function Header() {
 	const dispatch = useDispatch();
+
+	const userName = useSelector((state) => state.userData.userName);
 
 	function interactRefreshButton() {
 		let button = document.querySelector('.ico-refresh');
@@ -37,7 +39,7 @@ export default function Header() {
 		<CSSTransition ref={nodeRef} in={animStart} timeout={700} classNames={'header'}>
 			<header className="header">
 				<div className="header__title">
-					<h1>Your`s day</h1>
+					<h1>Hello, {userName}!</h1>
 					<p>{new Date().toLocaleString('en-EU', options)}</p>
 				</div>
 				<div className="ico-refresh" onClick={interactRefreshButton}></div>
