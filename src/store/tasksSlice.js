@@ -9,38 +9,19 @@ function updateEditTime(state, taskIndex) {
 
 export const tasksSlice = createSlice({
 	name: 'tasks',
-	initialState: [
-		{
-			title: 'Test task',
-			taskStatus: false,
-			isImportant: false,
-			steps: [{ stepStatus: false, title: '1' }, { stepStatus: false, title: '2' }],
-			note: 'Note_1',
-			lastEdit: new Date().toLocaleString('ru', {
-				hour: 'numeric',
-				minute: 'numeric',
-			}),
-		},
-		{
-			title: 'Second test task',
-			taskStatus: false,
-			isImportant: false,
-			steps: [],
-			note: 'Note_2',
-			lastEdit: new Date().toLocaleString('ru', {
-				hour: 'numeric',
-				minute: 'numeric',
-			}),
-		}
-	],
+	initialState: [],
 	reducers: {
+		setTasks: (state, tasksArray) => {
+			return tasksArray.payload;
+		},
+
 		refreshTasks: (state) => {
 			return [
 				{
 					title: 'Test task',
-					taskStatus: false,
+					status: false,
 					isImportant: false,
-					steps: [{ stepStatus: false, title: '1' }, { stepStatus: false, title: '2' }],
+					steps: [{ status: false, title: '1' }, { status: false, title: '2' }],
 					note: '',
 					lastEdit: new Date().toLocaleString('ru', {
 						hour: 'numeric',
@@ -49,7 +30,7 @@ export const tasksSlice = createSlice({
 				},
 				{
 					title: 'Second test task',
-					taskStatus: false,
+					status: false,
 					isImportant: false,
 					steps: [],
 					note: '',
@@ -62,7 +43,7 @@ export const tasksSlice = createSlice({
 		},
 
 		taskStatusChange: (state, taskIndex) => {
-			state[taskIndex.payload].taskStatus = !state[taskIndex.payload].taskStatus;
+			state[taskIndex.payload].status = !state[taskIndex.payload].status;
 			updateEditTime(state, taskIndex.payload);
 		},
 
@@ -71,7 +52,7 @@ export const tasksSlice = createSlice({
 			state.push(
 				{
 					title: action.payload,
-					taskStatus: false,
+					status: false,
 					isImportant: false,
 					steps: [],
 					note: '',
@@ -105,7 +86,7 @@ export const tasksSlice = createSlice({
 		addStep: (state, action) => {
 			state[action.payload.taskIndex].steps.push(
 				{
-					stepStatus: false,
+					status: false,
 					title: action.payload.newStepTitle,
 				}
 			);
@@ -113,7 +94,7 @@ export const tasksSlice = createSlice({
 		},
 
 		stepStatusChange: (state, action) => {
-			state[action.payload.taskIndex].steps[action.payload.stepIndex].stepStatus = !state[action.payload.taskIndex].steps[action.payload.stepIndex].stepStatus;
+			state[action.payload.taskIndex].steps[action.payload.stepIndex].status = !state[action.payload.taskIndex].steps[action.payload.stepIndex].status;
 
 			updateEditTime(state, action.payload.taskIndex);
 		},
@@ -132,6 +113,7 @@ export const tasksSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+	setTasks,
 	refreshTasks,
 	taskStatusChange,
 	addTask,

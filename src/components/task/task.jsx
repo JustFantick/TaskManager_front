@@ -38,7 +38,7 @@ function Task(props) {
 	}
 
 	const dispatch = useDispatch();
-	const taskStatus = useSelector((state) => state.tasks[props.index].taskStatus);
+	const taskStatus = useSelector((state) => state.tasks[props.index].status);
 	const taskImportance = useSelector((state) => state.tasks[props.index].isImportant);
 	const taskTitle = useSelector((state) => state.tasks[props.index].title);
 

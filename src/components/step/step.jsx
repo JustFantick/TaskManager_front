@@ -28,14 +28,14 @@ export default function Step(props) {
 
 	return (
 		<li className='step' onClick={(e) => onStepClickHandler(e)} index={props.stepIndex}>
-			<Status status={task.steps[props.stepIndex].stepStatus} pc={21} mb={17}
+			<Status status={task.steps[props.stepIndex].status} pc={21} mb={17}
 				statusChangeHandler={() => dispatch(stepStatusChange({
 					taskIndex: props.taskIndex,
 					stepIndex: props.stepIndex,
 				}))} />
 
 			<div
-				className={task.steps[props.stepIndex].stepDone ? "step__title done" : "step__title"}
+				className={task.steps[props.stepIndex].status ? "step__title done" : "step__title"}
 				contentEditable="true"
 				suppressContentEditableWarning="true"
 				onBlur={(e) => onBlurHandler(e)}

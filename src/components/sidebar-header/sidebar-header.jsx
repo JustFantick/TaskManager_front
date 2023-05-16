@@ -61,13 +61,13 @@ export default function SidebarHeader() {
 		<div className='sidebar-header'>
 			<div className="sidebar-task">
 				<Status mb={20} pc={25}
-					status={task ? task.taskStatus : false}
+					status={task ? task.status : false}
 					statusChangeHandler={() => dispatch(taskStatusChange(taskIndex))}
 				/>
 				<div
 					className={
 						task ?
-							task.taskStatus ?
+							task.status ?
 								"sidebar-task__title done" :
 								"sidebar-task__title" : "sidebar-task__title"
 					}
