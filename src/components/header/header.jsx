@@ -10,13 +10,14 @@ export default function Header() {
 
 	const userName = useSelector((state) => state.userData.userName);
 
+	const iconRefresh = useRef(null);
+
 	function interactRefreshButton() {
-		let button = document.querySelector('.ico-refresh');
-		button.classList.add('active');
+		iconRefresh.current.classList.add('active');
 
 		setTimeout(function () {
 			dispatch(refreshTasks());
-			button.classList.remove('active');
+			iconRefresh.current.classList.remove('active');
 		}, 700);
 	}
 
@@ -42,7 +43,7 @@ export default function Header() {
 					<h1>Hello, {userName}!</h1>
 					<p>{new Date().toLocaleString('en-EU', options)}</p>
 				</div>
-				<div className="ico-refresh" onClick={interactRefreshButton}></div>
+				<div className="ico-refresh" ref={iconRefresh} onClick={interactRefreshButton}></div>
 			</header>
 		</CSSTransition>
 	)

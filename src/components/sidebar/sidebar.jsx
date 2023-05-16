@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SidebarHeader from '../sidebar-header/sidebar-header.jsx';
 import Notes from '../notes/notes.jsx';
 import SidebarFooter from '../sidebar-footer/sidebar-footer.jsx';
@@ -8,14 +8,15 @@ export default function Sidebar(props) {
 	const [isPc, setIsPc] = useState(true);
 	const [popupOpen, setPopupOpen] = useState(false);
 
+	const sidebar = useRef(null);
 
 	useEffect(() => {
 		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
 			.test(navigator.userAgent)) {
 			setIsPc(false);
 
-			document.querySelector('.sidebar').addEventListener('touchstart', handleTouchStart);
-			document.querySelector('.sidebar').addEventListener('touchmove', handleTouchMove);
+			sidebar.current.addEventListener('touchstart', handleTouchStart);
+			sidebar.current.addEventListener('touchmove', handleTouchMove);
 
 			let x1, y1;
 			function handleTouchStart(e) {
@@ -41,7 +42,7 @@ export default function Sidebar(props) {
 	}, [])
 
 	return (
-		<aside className="sidebar">
+		<aside className="sidebar" ref={sidebar}>
 			<div className='sidebar__header'>
 				<SidebarHeader />
 

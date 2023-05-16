@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Status from '../status/status.jsx';
 import Step from '../step/step.jsx';
 
@@ -12,23 +12,24 @@ export default function SidebarHeader() {
 	const taskIndex = useSelector((state) => state.taskIndex.value);
 	const task = useSelector((state) => state.tasks[taskIndex]);
 
+	const addStepPlus = useRef(null);
+	const addStepInput = useRef(null);
+	const addStepParent = useRef(null);
+
 	function interactInput(e) {
 		let target = e.target;
-		let plus = document.querySelector('.add-step__plus');
-		let input = document.querySelector('.add-step__title');
-		let parent = document.querySelector('.add-step');
 
-		if (target === input || target === plus && !parent.classList.contains('focused')) {
-			parent.classList.add('focused');
-			input.focus();
+		if (target === addStepInput.current || target === addStepPlus.current && !addStepParent.current.classList.contains('focused')) {
+			addStepParent.current.classList.add('focused');
+			addStepInput.current.focus();
 
 			document.querySelector('.wrapper').addEventListener('click', function (e) {
 				if (!e.target.closest('.add-step'))
-					parent.classList.remove('focused');
+					addStepParent.current.classList.remove('focused');
 			}, { 'once': true });
-		} else if (target === plus && parent.classList.contains('focused')) {
-			parent.classList.remove('focused');
-			input.value = '';
+		} else if (target === addStepPlus.current && addStepParent.current.classList.contains('focused')) {
+			addStepParent.current.classList.remove('focused');
+			addStepInput.current.value = '';
 		}
 	}
 
@@ -37,7 +38,7 @@ export default function SidebarHeader() {
 	}
 
 	function onAddStepKeyDownHandler(e) {
-		if (e.code === 'Enter' && document.querySelector('.add-step__title').value !== '') {
+		if (e.code === 'Enter' && addStepInput.current.value !== '') {
 			dispatch(addStep({
 				taskIndex: taskIndex,
 				newStepTitle: e.target.value,
@@ -94,10 +95,10 @@ export default function SidebarHeader() {
 				}
 			</ul>
 
-			<div className='add-step' onClick={interactInput}>
-				<div className="add-step__plus"></div>
+			<div className='add-step' ref={addStepParent} onClick={interactInput}>
+				<div className="add-step__plus" ref={addStepPlus}></div>
 
-				<input type={'text'} name='stepName'
+				<input type={'text'} name='stepName' ref={addStepInput}
 					placeholder='Enter next step`s title'
 					className="add-step__title" onKeyDown={(e) => onAddStepKeyDownHandler(e)}
 				/>
