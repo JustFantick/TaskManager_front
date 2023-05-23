@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../../store/tasksSlice';
 
 import { CSSTransition } from 'react-transition-group';
@@ -36,16 +36,23 @@ export default function AddTask() {
 		}
 	}
 
+	const userId = useSelector((state) => state.userData.userId);
 	function onInputKeyDownHandler(e) {
 		if (e.code === 'Enter' && e.target.value !== '') {
-			dispatch(addTask(e.target.value));
+			dispatch(addTask({
+				title: e.target.value,
+				userId: userId,
+			}));
 			e.target.value = '';
 		};
 	}
 
 	function onIconClickHandler() {
 		if (input.current.value !== '') {
-			dispatch(addTask(input.current.value));
+			dispatch(addTask({
+				title: input.current.value,
+				userId: userId,
+			}));
 			input.current.value = '';
 		}
 	}

@@ -8,8 +8,10 @@ export default function Notes() {
 	const taskIndex = useSelector((state) => state.taskIndex.value);
 	const task = useSelector((state) => state.tasks[taskIndex]);
 
+	const userId = useSelector((state) => state.userData.userId);
 	function onNotesBlur(e) {
 		dispatch(saveNote({
+			userId: userId,
 			taskIndex: taskIndex,
 			noteText: e.target.innerText,
 		}));

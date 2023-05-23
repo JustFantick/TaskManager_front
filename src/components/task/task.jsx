@@ -42,15 +42,23 @@ function Task(props) {
 	const taskImportance = useSelector((state) => state.tasks[props.index].isImportant);
 	const taskTitle = useSelector((state) => state.tasks[props.index].title);
 
+	const userId = useSelector((state) => state.userData.userId);
+
 	return (
 		<div className='task' onClick={chooseTask} index={props.index}>
 			<Status pc={25} mb={20} status={taskStatus}
-				statusChangeHandler={() => dispatch(taskStatusChange(props.index))} />
+				statusChangeHandler={() => dispatch(taskStatusChange({
+					taskIndex: props.index,
+					userId: userId,
+				}))} />
 
 			<div className={taskStatus ? "task__title done" : "task__title"}> {taskTitle} </div>
 
 			<div
-				onClick={() => dispatch(taskStarStatusChange(props.index))}
+				onClick={() => dispatch(taskStarStatusChange({
+					taskIndex: props.index,
+					userId: userId,
+				}))}
 				className={
 					taskImportance ? "task__star ico-star active" : "task__star ico-star"
 				}

@@ -9,6 +9,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function SidebarHeader() {
 	const dispatch = useDispatch();
+	const userId = useSelector((state) => state.userData.userId);
 	const taskIndex = useSelector((state) => state.taskIndex.value);
 	const task = useSelector((state) => state.tasks[taskIndex]);
 
@@ -40,6 +41,7 @@ export default function SidebarHeader() {
 	function onAddStepKeyDownHandler(e) {
 		if (e.code === 'Enter' && addStepInput.current.value !== '') {
 			dispatch(addStep({
+				userId: userId,
 				taskIndex: taskIndex,
 				newStepTitle: e.target.value,
 			}))
@@ -53,6 +55,7 @@ export default function SidebarHeader() {
 		dispatch(taskTitleChange({
 			taskIndex: taskIndex,
 			newTaskTitle: e.target.textContent,
+			userId: userId,
 		}))
 	}
 
@@ -63,7 +66,10 @@ export default function SidebarHeader() {
 			<div className="sidebar-task">
 				<Status mb={20} pc={25}
 					status={task ? task.status : false}
-					statusChangeHandler={() => dispatch(taskStatusChange(taskIndex))}
+					statusChangeHandler={() => dispatch(taskStatusChange({
+						taskIndex: taskIndex,
+						userId: userId,
+					}))}
 				/>
 				<div
 					className={

@@ -18,6 +18,7 @@ export default function DeleteTaskPopup(props) {
 		if (!e.target.closest('.popup__body')) hidePopup();
 	}
 
+	const userId = useSelector((state) => state.userData.userId);
 	function deleteBtnClickHandler() {
 		props.disactivatePopup();
 
@@ -26,7 +27,11 @@ export default function DeleteTaskPopup(props) {
 			task.classList.remove('active');
 		});
 
-		dispatch(removeTask(currentTaskIndex));
+		dispatch(removeTask({
+			userId: userId,
+			taskIndex: currentTaskIndex,
+		}
+		));
 	}
 
 	return (
