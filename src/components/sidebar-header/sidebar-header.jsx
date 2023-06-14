@@ -9,7 +9,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function SidebarHeader() {
 	const dispatch = useDispatch();
-	const userId = useSelector((state) => state.userData.userId);
+	const userId = useSelector((state) => state.authorizationData.userId);
 	const taskIndex = useSelector((state) => state.taskIndex.value);
 	const task = useSelector((state) => state.tasks[taskIndex]);
 

@@ -36,7 +36,7 @@ export default function AddTask() {
 		}
 	}
 
-	const userId = useSelector((state) => state.userData.userId);
+	const userId = useSelector((state) => state.authorizationData.userId);
 	function onInputKeyDownHandler(e) {
 		if (e.code === 'Enter' && e.target.value !== '') {
 			dispatch(addTask({

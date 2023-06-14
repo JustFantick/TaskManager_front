@@ -8,7 +8,7 @@ import { removeStep, stepTitleChange, stepStatusChange } from '../../store/tasks
 export default function Step(props) {
 	const dispatch = useDispatch();
 	const task = useSelector((state) => state.tasks[props.taskIndex]);
-	const userId = useSelector((state) => state.userData.userId);
+	const userId = useSelector((state) => state.authorizationData.userId);
 
 	function onStepClickHandler(e) {
 		if (e.target.classList.contains('delete-step')) {

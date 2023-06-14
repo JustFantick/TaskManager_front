@@ -42,7 +42,7 @@ function Task(props) {
 	const taskImportance = useSelector((state) => state.tasks[props.index].isImportant);
 	const taskTitle = useSelector((state) => state.tasks[props.index].title);
 
-	const userId = useSelector((state) => state.userData.userId);
+	const userId = useSelector((state) => state.authorizationData.userId);
 
 	return (
 		<div className='task' onClick={chooseTask} index={props.index}>

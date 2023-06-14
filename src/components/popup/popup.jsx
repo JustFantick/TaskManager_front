@@ -7,8 +7,9 @@ import { CSSTransition } from 'react-transition-group';
 
 export default function DeleteTaskPopup(props) {
 	const dispatch = useDispatch();
-	const currentTask = useSelector((state) => state.tasks[currentTaskIndex]);
 	const currentTaskIndex = useSelector((state) => state.taskIndex.value);
+	const currentTask = useSelector((state) => state.tasks[currentTaskIndex]);
+
 
 	function hidePopup() {
 		props.disactivatePopup();
@@ -18,7 +19,7 @@ export default function DeleteTaskPopup(props) {
 		if (!e.target.closest('.popup__body')) hidePopup();
 	}
 
-	const userId = useSelector((state) => state.userData.userId);
+	const userId = useSelector((state) => state.authorizationData.userId);
 	function deleteBtnClickHandler() {
 		props.disactivatePopup();
 
@@ -41,7 +42,7 @@ export default function DeleteTaskPopup(props) {
 			<div className='popup' onClick={outBodyClickHandler}>
 				<div className="popup__body">
 					<div className='popup__question'>
-						You want to delete the '{currentTask ? currentTask.title : ''}'a, right?
+						You want to delete the '{currentTask ? currentTask.title : ''}', right?
 					</div>
 					<button onClick={hidePopup} className='popup__cancel-btn'>Cancel</button>
 					<button onClick={deleteBtnClickHandler} className='popup__right-btn'>Delete</button>

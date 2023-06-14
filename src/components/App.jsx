@@ -6,7 +6,7 @@ import Authorization from './authorization/authorization.jsx';
 import { useSelector } from 'react-redux';
 
 export default function App() {
-	const authorizedStatus = useSelector((state) => state.authorizationStatus.status);
+	const authorizedStatus = useSelector((state) => state.authorizationData.status);
 
 	const tasksBlock =
 		<React.Fragment>

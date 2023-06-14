@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshTasks } from '../../store/tasksSlice.js';
+import { setNonAuthorized, setUserName, setUserId } from '../../store/authorizationDataSlice.js';
 
 import { CSSTransition } from 'react-transition-group';
 
 export default function Header() {
 	const dispatch = useDispatch();
 
-	const userName = useSelector((state) => state.userData.userName);
+	const userName = useSelector((state) => state.authorizationData.userName);
 
-	const iconRefresh = useRef(null);
+	const logOutBtn = useRef(null);
 
-	function interactRefreshButton() {
-		iconRefresh.current.classList.add('active');
-
-		setTimeout(function () {
-			dispatch(refreshTasks());
-			iconRefresh.current.classList.remove('active');
-		}, 700);
+	function logOutClickHandler() {
+		//logOutBtn.current.classList.add('active');
+		dispatch(setNonAuthorized());
+		dispatch(setUserName(''));
+		dispatch(setUserId(null));
 	}
 
 	const [animStart, setAnimStart] = useState(false);
@@ -43,7 +41,7 @@ export default function Header() {
 					<h1>Hello, {userName}!</h1>
 					<p>{new Date().toLocaleString('en-EU', options)}</p>
 				</div>
-				<div className="ico-refresh" ref={iconRefresh} onClick={interactRefreshButton}></div>
+				<div className="log-out-btn" ref={logOutBtn} onClick={logOutClickHandler}>Log out</div>
 			</header>
 		</CSSTransition>
 	)

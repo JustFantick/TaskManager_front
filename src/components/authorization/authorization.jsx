@@ -4,8 +4,8 @@ import arrow from '../../img/side-arrow.svg';
 import Preloader from '../preloader/preloader.jsx';
 
 import { useDispatch } from 'react-redux';
-import { setAuthorized } from '../../store/authorizationStatus.js';
-import { setUserId, setUserName } from '../../store/userDataSlice.js';
+import { setAuthorized } from '../../store/authorizationDataSlice.js';
+import { setUserId, setUserName } from '../../store/authorizationDataSlice.js';
 import { setTasks } from '../../store/tasksSlice.js';
 import { CSSTransition } from 'react-transition-group';
 
