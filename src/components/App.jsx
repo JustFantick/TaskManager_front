@@ -5,6 +5,8 @@ import Sidebar from "./sidebar/sidebar.jsx";
 import Authorization from './authorization/authorization.jsx';
 import { useSelector } from 'react-redux';
 
+export const port = "http://taskmanager.cx.ua";
+
 export default function App() {
 	const authorizedStatus = useSelector((state) => state.authorizationData.status);
 

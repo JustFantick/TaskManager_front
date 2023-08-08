@@ -9,11 +9,13 @@ import { setUserId, setUserName } from '../../store/authorizationDataSlice.js';
 import { setTasks } from '../../store/tasksSlice.js';
 import { CSSTransition } from 'react-transition-group';
 
+import { port } from '../App.jsx';
+
 export default function Authorization() {
 	const dispatch = useDispatch();
 
 	async function downloadUserData(userId) {
-		const requestJSON = await fetch(`http://localhost:2210/getTasks?userId=${userId}`, { method: 'GET' });
+		const requestJSON = await fetch(`${port}/getTasks?userId=${userId}`, { method: 'GET' });
 		const result = await requestJSON.json();
 		dispatch(setTasks(result));
 	}
@@ -68,7 +70,7 @@ export default function Authorization() {
 		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
 			setShowLoader(true);
 
-			const response = await fetch(`http://localhost:2210/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'GET' });
+			const response = await fetch(`${port}/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'GET' });
 			const data = await response.json();
 
 			if (data.status === 0) {
@@ -105,7 +107,7 @@ export default function Authorization() {
 		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
 			setShowLoader(true);
 
-			const response = await fetch(`http://localhost:2210/registerNewUser?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'POST' });
+			const response = await fetch(`${port}/registerNewUser?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'POST' });
 			const data = await response.json();
 
 			if (data.status === 0) {
