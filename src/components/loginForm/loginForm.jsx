@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import './loginForm.less';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
