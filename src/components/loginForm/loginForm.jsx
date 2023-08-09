@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Popup from '../popup/popup.jsx';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
@@ -82,44 +83,58 @@ export default function LoginForm() {
 			validatePassword(passwordInput.current.value);
 		}
 	}
+
+	const [isPopupOpen, setIsPopupOpen] = useState(false);
+
 	return (
-		<form className='form-wrapper'>
-			<div className="form-wrapper__inputs">
-				<div className="input-group">
-					<label htmlFor='email-input' ref={loginlLabel} className="input-group__label">
-						{emailLabelText}
-					</label>
-					<input placeholder='User login' type='text'
-						ref={loginlInput}
-						onBlur={(e) => validateLogin(e.target.value)}
-						id='email-input' className={`input-group__input ${emailValidStatus}`} />
+		<React.Fragment>
+			<form className='form-wrapper'>
+				<div className="form-wrapper__inputs">
+					<div className="input-group">
+						<label htmlFor='email-input' ref={loginlLabel} className="input-group__label">
+							{emailLabelText}
+						</label>
+						<input placeholder='User login' type='text'
+							ref={loginlInput}
+							onBlur={(e) => validateLogin(e.target.value)}
+							id='email-input' className={`input-group__input ${emailValidStatus}`} />
+					</div>
+
+					<div className="input-group">
+						<label htmlFor='password-input' ref={passwordLabel} className="input-group__label">{passwordLabelText}</label>
+						<input type='password' placeholder='_____'
+							ref={passwordInput}
+							onBlur={(e) => validatePassword(e.target.value)}
+							id='password-input' className={`input-group__input ${passwordValidStatus}`} />
+					</div>
+
+					<div className="input-group checkbox-input">
+						<label htmlFor='checkbox-input' ref={checkboxLabel} className="input-group__label">Remember me</label>
+						<input type='checkbox'
+							ref={checkboxInput}
+							id='checkbox-input' className={`input-group__checkbox ${passwordValidStatus}`} />
+					</div>
+
+					<div className="form-link" onClick={() => setIsPopupOpen(true)}>Forgot password?</div>
+
 				</div>
 
-				<div className="input-group">
-					<label htmlFor='password-input' ref={passwordLabel} className="input-group__label">{passwordLabelText}</label>
-					<input type='password' placeholder='_____'
-						ref={passwordInput}
-						onBlur={(e) => validatePassword(e.target.value)}
-						id='password-input' className={`input-group__input ${passwordValidStatus}`} />
+				<div className="form-wrapper__buttons">
+					<Button onClickHandler={loginClickHandler}>
+						Login <img src={arrow} alt="arrow" />
+					</Button>
+
 				</div>
+			</form>
 
-				<div className="input-group checkbox-input">
-					<label htmlFor='checkbox-input' ref={checkboxLabel} className="input-group__label">Remember me</label>
-					<input type='checkbox'
-						ref={checkboxInput}
-						id='checkbox-input' className={`input-group__checkbox ${passwordValidStatus}`} />
+			<Popup isPopupOpen={isPopupOpen} hidePopup={() => setIsPopupOpen(false)}>
+				<div className='popup__question'>
+					We can send password on email this user was registered on. Do you accept it?
 				</div>
+				<button onClick={() => setIsPopupOpen(false)} className='popup__cancel-btn'>Send password</button>
+				<button onClick={() => setIsPopupOpen(false)} className='popup__right-btn'>Cancel</button>
+			</Popup>
 
-				<div className="form-link">Forgot password?</div>
-
-			</div>
-
-			<div className="form-wrapper__buttons">
-				<Button onClickHandler={loginClickHandler}>
-					Login <img src={arrow} alt="arrow" />
-				</Button>
-
-			</div>
-		</form>
+		</React.Fragment>
 	)
 }
