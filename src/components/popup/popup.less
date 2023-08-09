@@ -1,10 +1,10 @@
 .popup {
-	position: absolute;
+	position: fixed;
 	z-index: 99;
 	top: 0;
 	left: 0;
 	background-color: rgba(0, 0, 0, 0.7);
-	height: 100vh;
+	height: 100dvh;
 	width: 100%;
 
 	display: flex;
@@ -13,8 +13,13 @@
 
 	padding: 0 15px;
 
+	@wrapperTransDuration: 0.5s;
+	@bodyTransDuration: 0.2s;
+	@bodyTransDelay: 0.3s;
+
 	&__body {
-		transition: all 0.15s linear; //onClosePopup
+		max-width: 750px;
+		transition: all @bodyTransDuration ease-in;
 
 		transform: translateX(-50%);
 		opacity: 0;
@@ -34,7 +39,8 @@
 	&__question {
 		color: whitesmoke;
 		font-size: #adapt(31, 24)[@value];
-		text-align: center;
+		text-align: justify;
+		line-height: 1.175;
 
 		grid-column-start: 1;
 		grid-column-end: 3;
@@ -49,8 +55,6 @@
 		padding: #adapt(15, 10)[@value] #adapt(30, 20)[@value];
 		border-radius: 5px;
 		color: whitesmoke;
-
-		transition: all 0.3s ease-in;
 	}
 
 	&__right-btn {
@@ -73,25 +77,25 @@
 
 	visibility: hidden;
 	opacity: 0;
-	transition: all 0.3s linear 0.15s; //onClosePopup
+	transition: all @wrapperTransDuration ease-in; //onClosePopup
 
 	&-exit-active,
 	&-exit-done {
 		visibility: hidden;
 		opacity: 0;
-		transition: all 0.3s linear 0.15s; //onClosePopup
+		transition: all @wrapperTransDuration ease-in; //onClosePopup	
 	}
 
 	&-enter-active,
 	&-enter-done {
 		visibility: visible;
 		opacity: 1;
-		transition: all 0.25s linear; //onOpenPopup
+		transition: all @wrapperTransDuration ease-in; //onOpenPopup
 
 		.popup__body {
 			opacity: 1;
 			transform: translateX(0);
-			transition: all 0.15s linear 0.15s; //onOpenPopup
+			transition: all @bodyTransDuration ease-in @bodyTransDelay; //onOpenPopup
 		}
 	}
 
