@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SidebarHeader from '../sidebar-header/sidebar-header.jsx';
 import Notes from '../notes/notes.jsx';
 import SidebarFooter from '../sidebar-footer/sidebar-footer.jsx';
-import DeleteTaskPopup from '../popup/popup.jsx';
+import { DeleteTaskPopup } from '../popup/popup.jsx';
 
 export default function Sidebar(props) {
 	const [isPc, setIsPc] = useState(true);
@@ -52,7 +52,7 @@ export default function Sidebar(props) {
 
 			<SidebarFooter isPc={isPc} activatePopup={() => setPopupOpen(true)} />
 
-			<DeleteTaskPopup isPopupOpen={popupOpen} hidePopup={() => setPopupOpen(false)} />
+			<DeleteTaskPopup isPopupOpen={popupOpen} hidePopup={() => setPopupOpen(false)}></DeleteTaskPopup>
 		</aside>
 	)
 }
