@@ -52,7 +52,7 @@ export default function Sidebar(props) {
 
 			<SidebarFooter isPc={isPc} activatePopup={() => setPopupOpen(true)} />
 
-			<DeleteTaskPopup popupOpen={popupOpen} disactivatePopup={() => setPopupOpen(false)} />
+			<DeleteTaskPopup isPopupOpen={popupOpen} hidePopup={() => setPopupOpen(false)} />
 		</aside>
 	)
 }
