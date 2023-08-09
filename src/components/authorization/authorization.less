@@ -6,6 +6,20 @@
 	align-items: center;
 	padding: 20px 0;
 
+	&__form-wrapper {
+		//Hides appearing scrollbar when 
+		//form changes from Login to Register
+		overflow-y: hidden;
+	}
+
+	@media (max-width: 670px) {
+		min-height: 100dvh;
+
+		&__body {
+			min-height: 100dvh;
+		}
+	}
+
 	&__body {
 		border-radius: 10px;
 		background-color: rgba(0, 0, 0, 0.75);

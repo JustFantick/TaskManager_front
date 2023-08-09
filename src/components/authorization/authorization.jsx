@@ -8,6 +8,7 @@ import { setTasks } from '../../store/tasksSlice.js';
 import { CSSTransition } from 'react-transition-group';
 
 import { port } from '../App.jsx';
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export default function Authorization() {
 	const dispatch = useDispatch();
@@ -27,6 +28,8 @@ export default function Authorization() {
 		setAuthorizationInAnim(true);
 	}, []);
 
+	const [listRef] = useAutoAnimate();//auto-animate adding/removing tasks
+
 	return (
 		<React.Fragment>
 			<CSSTransition
@@ -35,7 +38,7 @@ export default function Authorization() {
 				classNames='authorization'
 				mountOnEnter unmountOnExit
 			>
-				<div className='authorization'>
+				<section className='authorization'>
 					<div className="authorization__body">
 						<div className="authorization__mode-switch authorize-mode-switch">
 							<div className={`authorize-mode-switch__log-in ${showLoginSection ? 'selected' : ''}`}
@@ -52,13 +55,13 @@ export default function Authorization() {
 						</div>
 						<div className="authorization__line"></div>
 
-						<div className="authorization__form-wrapper">
+						<div ref={listRef} className="authorization__form-wrapper">
 							{showLoginSection ? <LoginForm /> : <RegisterForm />}
 						</div>
 
 					</div>
 
-				</div>
+				</section>
 
 			</CSSTransition>
 
