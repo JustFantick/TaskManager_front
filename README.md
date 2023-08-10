@@ -1,8 +1,8 @@
-# ToDo_course-proj
+# TaskManager
 
-This taskmanager was fully developed as cource project. Here you can find only __frontend__ part of web app.
+This ToDo app was fully developed as cource project. Here you can find only __client__ part of application.
 
-Technologies: React, Redux, Less. 
+Technologies: React, Redux, Less.
 To add animations used: react transition group, AutoAnimate library.
 ***
 Ready project is available at: http://taskmanager.cx.ua/
