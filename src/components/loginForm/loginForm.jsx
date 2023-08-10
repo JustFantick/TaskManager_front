@@ -1,17 +1,18 @@
 import React, { useState, useRef } from 'react';
-import Popup from '../popup/popup.jsx';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
+import { setTasks } from '../../store/tasksSlice';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
+import Popup from '../popup/popup.jsx';
 import Button from '../button/button.jsx';
 import arrow from '../../img/side-arrow.svg';
 
-export default function LoginForm() {
+export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 	const dispatch = useDispatch();
-	const [emailValidStatus, setEmailValidStatus] = useState('');
+	const [loginValidStatus, setLoginValidStatus] = useState('');
 	const [passwordValidStatus, setPasswordValidStatus] = useState('');
 
-	const [emailLabelText, setEmailLabelText] = useState('Enter your login');
+	const [loginLabelText, setLoginLabelText] = useState('Enter your login');
 	const [passwordLabelText, setPasswordLabelText] = useState('Enter your password');
 
 	const [loginlInput, passwordInput, loginlLabel, passwordLabel, checkboxInput, checkboxLabel] = [
@@ -20,14 +21,14 @@ export default function LoginForm() {
 
 	function validateLogin(currentInputValue) {
 		if (currentInputValue === '') {
-			setEmailLabelText('Enter your login');
-			setEmailValidStatus('non-valid');
+			setLoginLabelText('Enter your login');
+			setLoginValidStatus('non-valid');
 		} else if (/^\d+$/.test(currentInputValue)) {
-			setEmailLabelText('Login shouldn`t consist only digits');
-			setEmailValidStatus('non-valid');
+			setLoginLabelText('Login shouldn`t consist only digits');
+			setLoginValidStatus('non-valid');
 		} else {
-			setEmailLabelText('Login validated');
-			setEmailValidStatus('valid');
+			setLoginLabelText('Login validated');
+			setLoginValidStatus('valid');
 		}
 	}
 
@@ -44,40 +45,46 @@ export default function LoginForm() {
 		}
 	}
 
-	async function loginClickHandler() {
-		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
-			//setShowLoader(true);
+	async function loginClickHandler(e) {
+		e.preventDefault();
+
+		if (loginValidStatus === 'valid' && passwordValidStatus === 'valid') {
+			setShowLoader(true);
 
 			const response = await fetch(
-				`${port}/authorizeTry?login=${loginlInput.current.value}&password=${passwordInput.current.value}`,
-				{ method: 'GET' }
+				`${port}/authorize?login=${loginlInput.current.value}&password=${passwordInput.current.value}`,
+				{ method: 'POST' }
 			);
 			const data = await response.json();
+			console.log(data);
 
 			if (data.status === 0) {
 				switch (data.errorType) {
 					case 'user not found':
-						setEmailLabelText('User doesn`t exist');
+						setLoginLabelText('User doesn`t exist');
+						setLoginValidStatus('non-valid');
 						break;
 					case 'invalid password':
 						setPasswordLabelText('Invalid password');
+						setPasswordValidStatus('non-valid');
 						break;
 				}
 			} else if (data.status === 1) {
 				//500ms for close-anim of this component
-				//setTimeout(() => dispatch(setAuthorized()), 500);
-				//setAuthorizationInAnim(false);
+				setTimeout(() => dispatch(setAuthorized()), 500);//unmount Authorize component
+				setAuthorizationInAnim(false);//starts close-anim for Authorize component
 
-				dispatch(setAuthorized());
 				dispatch(setUserName(data.userLogin));
 				dispatch(setUserId(data.userId));
 
-				//downloadUserData(data.userId);
+				const requestJSON = await fetch(`${port}/getTasks?userId=${data.response.userId}`, { method: 'GET' });
+				const result = await requestJSON.json();
+				dispatch(setTasks(result));
 			} else {
 				console.log("Unexpected error");
 			}
 
-			//setShowLoader(false);
+			setShowLoader(false);
 		} else {
 			validateLogin(loginlInput.current.value);
 			validatePassword(passwordInput.current.value);
@@ -91,18 +98,18 @@ export default function LoginForm() {
 			<form className='form-wrapper'>
 				<div className="form-wrapper__inputs">
 					<div className="input-group">
-						<label htmlFor='email-input' ref={loginlLabel} className="input-group__label">
-							{emailLabelText}
+						<label htmlFor='login-input' ref={loginlLabel} className="input-group__label">
+							{loginLabelText}
 						</label>
-						<input placeholder='User login' type='text'
+						<input placeholder='User login' type='text' required
 							ref={loginlInput}
 							onBlur={(e) => validateLogin(e.target.value)}
-							id='email-input' className={`input-group__input ${emailValidStatus}`} />
+							id='login-input' className={`input-group__input ${loginValidStatus}`} />
 					</div>
 
 					<div className="input-group">
 						<label htmlFor='password-input' ref={passwordLabel} className="input-group__label">{passwordLabelText}</label>
-						<input type='password' placeholder='_____'
+						<input type='password' placeholder='_____' required
 							ref={passwordInput}
 							onBlur={(e) => validatePassword(e.target.value)}
 							id='password-input' className={`input-group__input ${passwordValidStatus}`} />
@@ -120,7 +127,7 @@ export default function LoginForm() {
 				</div>
 
 				<div className="form-wrapper__buttons">
-					<Button onClickHandler={loginClickHandler}>
+					<Button type={'submit'} onClickHandler={loginClickHandler}>
 						Login <img src={arrow} alt="arrow" />
 					</Button>
 

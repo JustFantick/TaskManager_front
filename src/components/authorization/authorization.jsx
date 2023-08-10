@@ -11,13 +11,13 @@ import { port } from '../App.jsx';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export default function Authorization() {
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
-	async function downloadUserData(userId) {
-		const requestJSON = await fetch(`${port}/getTasks?userId=${userId}`, { method: 'GET' });
-		const result = await requestJSON.json();
-		dispatch(setTasks(result));
-	}
+	// async function downloadUserData(userId) {
+	// 	const requestJSON = await fetch(`${port}/getTasks?userId=${userId}`, { method: 'GET' });
+	// 	const result = await requestJSON.json();
+	// 	dispatch(setTasks(result));
+	// }
 
 	const [showLoginSection, setShowLoginSection] = useState(true);
 
@@ -56,7 +56,13 @@ export default function Authorization() {
 						<div className="authorization__line"></div>
 
 						<div ref={listRef} className="authorization__form-wrapper">
-							{showLoginSection ? <LoginForm /> : <RegisterForm />}
+							{
+								showLoginSection ?
+									<LoginForm setShowLoader={setShowLoader}
+										setAuthorizationInAnim={setAuthorizationInAnim} /> :
+									<RegisterForm setShowLoader={setShowLoader}
+										setAuthorizationInAnim={setAuthorizationInAnim} />
+							}
 						</div>
 
 					</div>

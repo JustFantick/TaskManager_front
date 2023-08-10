@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
+import { setTasks } from '../../store/tasksSlice';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
 import Button from '../button/button.jsx';
 
-export default function RegisterForm() {
+export default function RegisterForm({ setShowLoader, setAuthorizationInAnim }) {
 	const dispatch = useDispatch();
 
 	const [loginValidStatus, setLoginValidStatus] = useState('');
@@ -54,31 +55,35 @@ export default function RegisterForm() {
 		}
 	}
 
-	async function registerClickHandler() {
-		if (emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
-			//setShowLoader(true);
+	async function registerClickHandler(e) {
+		e.preventDefault();
 
-			const response = await fetch(`${port}/registerNewUser?login=${loginlInput.current.value}&password=${passwordInput.current.value}`, { method: 'POST' });
+		if (loginValidStatus === 'valid' && emailValidStatus === 'valid' && passwordValidStatus === 'valid') {
+			setShowLoader(true);
+
+			const response = await fetch(
+				`${port}/register?login=${loginlInput.current.value}&password=${passwordInput.current.value}&email=${emailInput.current.value}`,
+				{ method: 'POST' }
+			);
 			const data = await response.json();
 
 			if (data.status === 0) {
 				setLoginLabelText('User already exist');
-				loginValidStatus('non-valid');
+				setLoginValidStatus('non-valid');
 			} else if (data.status === 1) {
 				//500ms for close-anim of this component
-				//setTimeout(() => dispatch(setAuthorized()), 500);
-				//setAuthorizationInAnim(false);
+				setTimeout(() => dispatch(setAuthorized()), 500);//unmount Authorize component
+				setAuthorizationInAnim(false);//starts close-anim for Authorize component
 
-				dispatch(setAuthorized());
-				dispatch(setUserName(data.userLogin));
-				dispatch(setUserId(data.userId));
+				dispatch(setUserName(data.response.userLogin));
+				dispatch(setUserId(data.response.userId));
 
-				//downloadUserData(data.userId);
-			} else {
-				console.log("Unexpected error");
-			}
+				const requestJSON = await fetch(`${port}/getTasks?userId=${data.response.userId}`, { method: 'GET' });
+				const result = await requestJSON.json();
+				setTasks(await result);
+			} else { console.log("Unexpected error") }
 
-			//setShowLoader(false);
+			setShowLoader(false);
 
 		} else {
 			validateLogin(loginlInput.current.value);
@@ -93,7 +98,7 @@ export default function RegisterForm() {
 
 				<div className="input-group">
 					<label htmlFor='login-input' className="input-group__label">{loginLabelText}</label>
-					<input placeholder='User login' type='text'
+					<input placeholder='User login' type='text' required
 						ref={loginlInput}
 						onBlur={(e) => validateLogin(e.target.value)}
 						id='login-input' className={`input-group__input ${loginValidStatus}`}
@@ -102,7 +107,7 @@ export default function RegisterForm() {
 
 				<div className="input-group">
 					<label htmlFor='email-input' className="input-group__label">{emailLabelText}</label>
-					<input placeholder='Email@gmail.com' type='email'
+					<input placeholder='Email@gmail.com' type='email' required
 						ref={emailInput}
 						onBlur={(e) => validateEmail(e.target.value)}
 						id='email-input'
@@ -112,7 +117,7 @@ export default function RegisterForm() {
 
 				<div className="input-group">
 					<label htmlFor='password-input' className="input-group__label">{passwordLabelText}</label>
-					<input type='password' placeholder='_____'
+					<input type='password' placeholder='_____' required
 						ref={passwordInput}
 						onBlur={(e) => validatePassword(e.target.value)}
 						id='password-input'
@@ -132,7 +137,7 @@ export default function RegisterForm() {
 			</div>
 
 			<div className="form-wrapper__buttons">
-				<Button onClickHandler={registerClickHandler}>Register</Button>
+				<Button type={'submit'} onClickHandler={registerClickHandler}>Register</Button>
 			</div>
 
 		</form>
