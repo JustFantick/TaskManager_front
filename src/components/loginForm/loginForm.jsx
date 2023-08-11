@@ -91,6 +91,14 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 		}
 	}
 
+	async function forgotPasswordOnClick() {
+		setIsPopupOpen(false);
+		const response = await fetch(
+			`${port}/forgotPassword?login=${loginlInput.current.value}`,
+			{ method: 'POST' }
+		);
+	}
+
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
 
 	return (
@@ -138,7 +146,7 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 				<div className='popup__question'>
 					We can send password on email this user was registered on. Do you accept it?
 				</div>
-				<button onClick={() => setIsPopupOpen(false)} className='popup__cancel-btn'>Send password</button>
+				<button onClick={forgotPasswordOnClick} className='popup__cancel-btn'>Send password</button>
 				<button onClick={() => setIsPopupOpen(false)} className='popup__right-btn'>Cancel</button>
 			</Popup>
 
