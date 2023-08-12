@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
-import { setTasks } from '../../store/tasksSlice';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
 import Button from '../button/button.jsx';
 
@@ -77,10 +76,6 @@ export default function RegisterForm({ setShowLoader, setAuthorizationInAnim }) 
 
 				dispatch(setUserName(data.response.userLogin));
 				dispatch(setUserId(data.response.userId));
-
-				const requestJSON = await fetch(`${port}/getTasks?userId=${data.response.userId}`, { method: 'GET' });
-				const result = await requestJSON.json();
-				setTasks(await result);
 			} else { console.log("Unexpected error") }
 
 			setShowLoader(false);

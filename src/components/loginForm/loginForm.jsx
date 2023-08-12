@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { port } from '../App.jsx';
 import { useDispatch } from 'react-redux';
-import { setTasks } from '../../store/tasksSlice';
 import { setAuthorized, setUserId, setUserName } from '../../store/authorizationDataSlice';
 import Popup from '../popup/popup.jsx';
 import Button from '../button/button.jsx';
@@ -56,7 +55,6 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 				{ method: 'POST' }
 			);
 			const data = await response.json();
-			console.log(data);
 
 			if (data.status === 0) {
 				switch (data.errorType) {
@@ -74,12 +72,8 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 				setTimeout(() => dispatch(setAuthorized()), 500);//unmount Authorize component
 				setAuthorizationInAnim(false);//starts close-anim for Authorize component
 
-				dispatch(setUserName(data.userLogin));
-				dispatch(setUserId(data.userId));
-
-				const requestJSON = await fetch(`${port}/getTasks?userId=${data.response.userId}`, { method: 'GET' });
-				const result = await requestJSON.json();
-				dispatch(setTasks(result));
+				dispatch(setUserName(data.response.userLogin));
+				dispatch(setUserId(data.response.userId));
 			} else {
 				console.log("Unexpected error");
 			}
