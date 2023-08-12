@@ -13,10 +13,12 @@ export default function Header() {
 	const logOutBtn = useRef(null);
 
 	function logOutClickHandler() {
-		//logOutBtn.current.classList.add('active');
 		dispatch(setNonAuthorized());
 		dispatch(setUserName(''));
 		dispatch(setUserId(null));
+
+		//clean LocalStorage variable needed for saving user's acound data
+		localStorage.removeItem('authorizationData');
 	}
 
 	const [animStart, setAnimStart] = useState(false);

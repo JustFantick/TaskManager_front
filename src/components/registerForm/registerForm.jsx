@@ -76,6 +76,16 @@ export default function RegisterForm({ setShowLoader, setAuthorizationInAnim }) 
 
 				dispatch(setUserName(data.response.userLogin));
 				dispatch(setUserId(data.response.userId));
+
+				//when checkbox set true save user's account data in LocalStorage
+				if (checkboxInput.current.checked) {
+					localStorage.setItem('authorizationData', JSON.stringify({
+						userName: data.response.userLogin,
+						userId: data.response.userId,
+					}));
+				} else {
+					localStorage.removeItem('authorizationData');
+				}
 			} else { console.log("Unexpected error") }
 
 			setShowLoader(false);
@@ -123,6 +133,7 @@ export default function RegisterForm({ setShowLoader, setAuthorizationInAnim }) 
 				<div className="input-group checkbox-input">
 					<label htmlFor='checkbox-input' className="input-group__label">Remember me</label>
 					<input type='checkbox'
+						defaultChecked={true}
 						ref={checkboxInput}
 						id='checkbox-input'
 						className={`input-group__checkbox ${passwordValidStatus}`}
