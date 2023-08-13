@@ -95,12 +95,25 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 		}
 	}
 
-	async function forgotPasswordOnClick() {
+	async function sendPasswordOnClick() {
 		setIsPopupOpen(false);
-		const response = await fetch(
+		const responseJSON = await fetch(
 			`${port}/forgotPassword?login=${loginlInput.current.value}`,
 			{ method: 'POST' }
 		);
+		const parsedResponse = await responseJSON.json();
+		if (parsedResponse.status === 1) {
+			setLoginLabelText('Check your email, please');
+			setLoginValidStatus('valid');
+		} else if (parsedResponse.status === 0 && parsedResponse.errorType === 'user not found') {
+			setLoginLabelText('User doesn`t exist');
+			setLoginValidStatus('non-valid');
+		}
+	}
+
+	function forgotPasswordOnClick() {
+		validateLogin(loginlInput.current.value);
+		if (loginValidStatus === 'valid') setIsPopupOpen(true);
 	}
 
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -135,7 +148,7 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 							id='checkbox-input' className={`input-group__checkbox ${passwordValidStatus}`} />
 					</div>
 
-					<div className="form-link" onClick={() => setIsPopupOpen(true)}>Forgot password?</div>
+					<div className="form-link" onClick={forgotPasswordOnClick}>Forgot password?</div>
 
 				</div>
 
@@ -149,9 +162,9 @@ export default function LoginForm({ setShowLoader, setAuthorizationInAnim }) {
 
 			<Popup isPopupOpen={isPopupOpen} hidePopup={() => setIsPopupOpen(false)}>
 				<div className='popup__question'>
-					We can send password on email this user was registered on. Do you accept it?
+					We could send password on email that this user was registered to. Do you confirm?
 				</div>
-				<button onClick={forgotPasswordOnClick} className='popup__cancel-btn'>Send password</button>
+				<button onClick={sendPasswordOnClick} className='popup__cancel-btn'>Send password</button>
 				<button onClick={() => setIsPopupOpen(false)} className='popup__right-btn'>Cancel</button>
 			</Popup>
 
