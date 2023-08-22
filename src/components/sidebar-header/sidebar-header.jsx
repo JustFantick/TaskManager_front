@@ -39,7 +39,8 @@ export default function SidebarHeader() {
 	}
 
 	function onAddStepKeyDownHandler(e) {
-		if (e.code === 'Enter' && addStepInput.current.value !== '') {
+		let enterBtnClicked = e.key === 'Enter' || e.which === 13 || e.keyCode === 13;
+		if (enterBtnClicked && addStepInput.current.value !== '') {
 			dispatch(addStep({
 				userId: userId,
 				taskIndex: taskIndex,
